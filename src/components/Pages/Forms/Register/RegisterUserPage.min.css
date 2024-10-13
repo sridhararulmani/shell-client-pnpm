@@ -1,0 +1,43 @@
+.register-form {
+  width: 50%;
+}
+.profile-input-box {
+  cursor: pointer;
+}
+label {
+  font-size: small;
+}
+.text-danger {
+  font-size: small;
+  padding: 10px;
+}
+.image-uploader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.img {
+  height: 120px;
+  width: 120px;
+  cursor: pointer;
+  overflow: hidden;
+  border: 1px dashed;
+}
+.profile-img {
+  height: inherit;
+  object-fit: cover;
+  width: inherit;
+}
+.alert {
+  top: 40%;
+  left: 25%;
+  position: absolute;
+}
+@media (max-width: 800px) {
+  .register-form {
+    width: 100%;
+    gap: 10px;
+  }
+
+}

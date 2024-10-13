@@ -1,0 +1,208 @@
+:root {
+  --dark-bg-color: rgb(33 37 41);
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.menu{
+  transition: 5s all ease-in-out;
+}
+.unAuth-menu {
+  display: flex;
+  gap: 15px;
+}
+.unAuth-menu .unAuth-menu-btn {
+  text-decoration: none;
+  color: white;
+  height: 30px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: small;
+  letter-spacing: 0.5px;
+  transition: 0.2s all ease-in-out;
+}
+.unAuth-menu-btn:hover:not(.active) {
+  background-color: rgba(167, 167, 167, 0.555);
+  letter-spacing: 1.5px;
+}
+.unAuth-menu-btn:active {
+  background-color: white;
+  color: black;
+}
+.unAuth-menu-btn.active {
+  background-color: white;
+  color: black;
+}
+.auth-menu {
+  background-color: white;
+  padding: 5px;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: 1s all ease-in-out;
+}
+.auth-menu-items{
+  list-style: none;
+  display: flex;
+}
+.auth-menu-item .auth-menu-btn {
+  height: 30px;
+  width: 100px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: rgb(133, 133, 133);
+  letter-spacing: 0.5px;
+
+  font-size: small;
+  transition: 0.3s all ease-in-out;
+}
+.auth-menu .auth-menu-btn:hover:not(.active) {
+  letter-spacing: 3px;
+}
+.auth-menu .auth-menu-btn.active {
+  background-color: var(--dark-bg-color);
+  color: white;
+  box-shadow: 0px 0px 1px 1px var(--dark-bg-color);
+}
+.menu-details{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.menu-items{
+  display: flex;
+  align-items: center;
+}
+.menu-details .user-profile-image-container{
+  height: 35px;
+  width: 35px;
+  border-radius: 100px;
+  object-fit: cover;
+  overflow: hidden;
+  cursor: pointer;
+}
+.user-profile-image{
+  height: 100%;
+  width: 100%;
+}
+.profile-menu{
+  position: absolute;
+  top: 105%;
+  right: 1%;
+  color: white;
+  background-color: rgb(65, 65, 65);
+  opacity: 95%;
+}
+@media (max-width: 800px) {
+  .navbar{
+    height: 12svh;
+  }
+  .menu-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-details{
+    gap: 20px;
+  }
+  .unAuth-menu .unAuth-menu-btn{
+    font-size: small;
+    letter-spacing: 1px;
+    width: 80px;
+  }
+  .auth-menu {
+    display: none;
+    border-radius: 0;
+    flex-direction: column;
+    position: absolute;
+    align-items: start;
+    justify-content: start;
+    top: 105%;
+    right: 1%;
+    opacity: 90%;
+    padding: 50px;
+    border-radius: 8px;
+    gap: 10px;
+    width: 60%;
+    background-color: rgb(65, 65, 65);
+  }
+  .auth-menu-items{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    list-style: none;
+  }
+  .auth-menu-item{
+    width: 100%;
+    list-style: none;
+    border: none;
+  }
+  .auth-menu-item .auth-menu-btn {
+    border-radius: 8px;
+    height: 40px;
+    width: 100%;
+    font-size: medium;
+    color: rgb(225, 225, 225);
+  }
+  .auth-menu-item .auth-menu-btn.active{
+    background-color: rgba(245, 245, 245, 0.247);
+    color: white;
+  }
+  .auth-menu-btn:hover:not(.active){
+    background-color: var(--dark-bg-color);
+  }
+  .auth-menu.active{
+    display: flex;
+  }
+  .hamburger-menu {
+    height: 25px;
+    width: 30px;
+    cursor: pointer;
+  }
+  .open-icon{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .open-icon span {
+    height: 5px;
+    width: 100%;
+    border-radius: 100px;
+    background-color: white;
+  }
+  .close-icon {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .close-icon span {
+    height: 5px;
+    width: 100%;
+    border-radius: 100px;
+    background-color: white;
+  }
+  .close-icon span:nth-child(1){
+    transform: rotate(45deg) translate(8px,9px);
+  }
+  .close-icon span:nth-child(2){
+    transform: rotate(-45deg) translate(5px,-7px);
+  }
+  .hamburger-menu{
+    order: 2;
+  }
+}
