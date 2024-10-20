@@ -64,7 +64,7 @@ const Login = ({ updateUser }) => {
 
   return (
     <div>
-      <div className="container p-3">
+      <div className="container p-3" data-aos="fade">
         <div className="row">
           <form
             onSubmit={handleLogin}
@@ -73,7 +73,7 @@ const Login = ({ updateUser }) => {
             <h2 className="card-title text-center">Login</h2>
             <div className="card-body d-flex flex-column gap-4">
               {error && (
-                <span className="card border-danger bg-danger p-4 text-white text-center">
+                <span className="card border-danger bg-danger p-4 text-white text-center" data-aos="flip-down" data-aos-delay="100">
                   {error}
                 </span>
               )}

@@ -58,10 +58,10 @@ const Navbar = ({ user }) => {
   return (
     <header className="navbar navbar-expand-lg w-100 navbar-dark bg-dark py-3 shadow-sm">
       <div className="container d-flex flex-row align-items-center justify-content-between">
-        <a href="/" className="navbar-brand fs-3 fw-bold ">
+        <a href="/" className="navbar-brand fs-3 fw-bold" data-aos="fade">
           <i className="fa-brands fa-shopify"></i>Shell.
         </a>
-        <div className="menu">
+        <div className="menu" data-aos="fade">
           {user ? (
             <div className="unAuth-menu">
               <NavLink

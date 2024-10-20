@@ -88,7 +88,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container p-3">
+    <div className="container p-3" data-aos="fade">
       <div className="row">
         <Formik
           initialValues={initialValues}

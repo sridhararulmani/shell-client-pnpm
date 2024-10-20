@@ -16,6 +16,7 @@ import Logout from "./components/Pages/Forms/Logout/LogoutUserPage.jsx";
 import Register from "./components/Pages/Forms/Register/RegisterUserPage.jsx";
 import Shop from "./components/Pages/Shop/ShopPage.jsx";
 import { LoadingProvider } from "./Util/LoadingContext.jsx";
+import AOSProvider from "./Util/AOSScrollAnimationContext.jsx";
 
 const App = () => {
   const [user, setUser] = useState(() =>
@@ -33,29 +34,37 @@ const App = () => {
     <div className="app">
       <AuthContext.Provider value={{ user, updateUser }}>
         <LoadingProvider>
-          <Router>
-            <PageTitile />
-            <Navbar user={user} />
-            <AppLoader />
-            <Routes>
-              <Route exact path="/" element={<Home user={user} />} />
-              <Route exact path="/shop" element={<Shop />}></Route>
-              <Route exact path="/about" element={<About />}></Route>
-              <Route
-                exact
-                path="/login"
-                element={<Login updateUser={updateUser} />}
-              ></Route>
-              <Route
-                exact
-                path="/logout"
-                element={<Logout updateUser={updateUser} />}
-              ></Route>
-              <Route exact path="/register" element={<Register />}></Route>
-            </Routes>
-          </Router>
+          <AOSProvider>
+            <Router>
+              <PageTitile />
+              <Navbar user={user} />
+              <AppLoader />
+              <Routes>
+                <Route exact path="/" element={<Home user={user} />} />
+                <Route exact path="/shop" element={<Shop />}></Route>
+                <Route exact path="/about" element={<About />}></Route>
+                <Route
+                  exact
+                  path="/login"
+                  element={<Login updateUser={updateUser} />}
+                ></Route>
+                <Route
+                  exact
+                  path="/logout"
+                  element={<Logout updateUser={updateUser} />}
+                ></Route>
+                <Route exact path="/register" element={<Register />}></Route>
+              </Routes>
+            </Router>
+          </AOSProvider>
         </LoadingProvider>
-        <ToastContainer draggable position="top-right" newestOnTop limit={6} progressStyle={locationbar}/>
+        <ToastContainer
+          draggable
+          position="top-right"
+          newestOnTop
+          limit={6}
+          progressStyle={locationbar}
+        />
       </AuthContext.Provider>
     </div>
   );

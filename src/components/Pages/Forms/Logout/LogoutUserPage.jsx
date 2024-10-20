@@ -10,7 +10,7 @@ const Logout = ({ updateUser }) => {
   };
 
   return (
-    <div className="container p-3">
+    <div className="container p-3" data-aos="fade">
       <div className="row">
         <div className="card logout-form p-5 border-0 bg-light shadow">
           <p className="card-title">Are you Sure. You wants to logout!</p>
