@@ -1,25 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
 import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast } from "../constant/ToastUtil";
 
-const API_BASE_URL = "http://localhost:8080";
+const APP_URL = "/shell";
+
+const API_BASE_URL = "http://localhost:8080" + APP_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
-
-// Function to show success toast
-const showSuccessToast = (message) => {
-  toast.success(message);
-};
-
-// Function to show error toast
-const showErrorToast = (message) => {
-  toast.error(message);
-};
 
 //Intercept to attach token to headers
 api.interceptors.request.use(
@@ -28,20 +21,25 @@ api.interceptors.request.use(
       config.url.includes("/auth/login") ||
       config.url.includes("/user/registerUser")
     ) {
+      console.log(config?.headers);
       console.log("request for login there is no need of tokens");
-      return config;
-    }
-    console.log("Access Token fetching for api request");
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    console.log("Fetched AccessToken from local storage " + accessToken);
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      console.log("Access Token fetching for api request");
+      const accessToken = localStorage.getItem("ACCESS_TOKEN");
+      // console.log("Fetched AccessToken from local storage " + accessToken);
+      console.log(config?.headers);
+      if (accessToken != null) {
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        console.log(config?.headers);
+      }
+      console.log(config?.headers);
     }
     return config;
   },
   (error) => {
-    showErrorToast(error.message);
-    console.log(error.message);
+    const { status, message } = error.response.data;
+    showErrorToast(message);
+    console.log(message);
     return Promise.reject(error);
   }
 );
@@ -49,45 +47,44 @@ api.interceptors.request.use(
 //Refreshing Tokens if access token error accured in header for all request
 api.interceptors.response.use(
   (response) => {
-    showSuccessToast(response);
+    console.log(response);
+    const { status, message } = response.data;
+    showSuccessToast(message);
+    console.log(message);
     return response;
   },
   async (error) => {
     console.log("Refreshing Tokens is Working...");
-    const originalRequest = error.config;
+    const { message } = error?.response?.data;
+    const originalRequest = error?.config;
     console.log(error);
-    showErrorToast(error.message);
-
-    if (error.response.status === 401 && !originalRequest._retry) {
+    console.log(message);
+    showErrorToast(message);
+    if (error && !originalRequest?._retry) {
       originalRequest._retry = true;
-
       const refreshToken = localStorage.getItem("REFRESH_TOKEN");
-
-      console.log("Refresh Token :" + refreshToken);
-
-      if (refreshToken) {
+      if (refreshToken != null) {
+        console.log("Refresh Token :" + refreshToken);
         try {
           console.log(
             "Auto Request for New Access And New Refresh Token by Axios..."
           );
-          const response = await axios.post("/tokens/refreshTokens", {
+          const response = await api.post("/tokens/refreshTokens", {
             refreshToken,
           });
-          console.log("Refreshing Tokens :" + response.data);
-          const { newAccessToken, newRefreshToken } = response.data;
+          console.log("Refreshing Tokens :" + response?.data);
+          const { newAccessToken, newRefreshToken } = response?.data;
           console.log("New Access Token :" + newAccessToken);
           console.log("New Refresh Token :" + newRefreshToken);
-
           localStorage.setItem("ACCESS_TOKEN", newAccessToken);
           localStorage.setItem("REFRESH_TOKEN", newRefreshToken);
-
-          axios.defaults.headers.common[
+          api.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`;
           //Retrying the past requestt using new access Token
           return api(originalRequest);
         } catch (error) {
-          showErrorToast(error.message);
+          showErrorToast(error?.message);
           console.log("Refresh Token Get Expired .....");
           return Promise.reject(error);
         }

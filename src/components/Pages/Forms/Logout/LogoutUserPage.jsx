@@ -1,11 +1,11 @@
-import { logout } from "../../../../Util/AuthSetGet";
+import { logout } from "../../../../util/config/AuthSetGet";
 import "./LogoutUserPage.min.css";
 import { Link } from "react-router-dom";
 
 const Logout = ({ updateUser }) => {
   const handleLogout = () => {
     if (localStorage.getItem("USER") != null) {
-      updateUser(logout());
+      updateUser = logout();
     }
   };
 

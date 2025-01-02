@@ -1,56 +1,53 @@
 import "./LoginUserPage.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import api from "../../../../Util/AxiosConfig";
+import api from "../../../../util/config/AxiosConfig";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { getCurrentUserDetails } from "../../../../Util/AuthSetGet";
-import { useLoading } from "../../../../Util/LoadingContext";
-import { toast } from "react-toastify";
+import { getCurrentUserDetails } from "../../../../util/config/AuthSetGet";
+import { useLoading } from "../../../../util/context/LoadingContext";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../../../util/constant/ToastUtil";
 
-const Login = ({ updateUser }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+const Login = () => {
   const navigate = useNavigate();
+
   const { startLoading, stopLoading } = useLoading();
 
-  // Function to show success toast
-  const showSuccessToast = (message) => {
-    toast.success(message);
-  };
+  const [userCridentials, setUserCridentials] = useState({
+    userName: "",
+    userPassword: "",
+  });
 
-  // Function to show error toast
-  const showErrorToast = (message) => {
-    toast.error(message);
-  };
+  const [error, setError] = useState(null);
 
-  const login = async ({ username, password }) => {
+  if (error) {
+    setTimeout(() => {
+      setError("");
+    }, 6000);
+  }
+
+  const login = async (userCridentials) => {
     startLoading();
     try {
-      console.log("Try Block is exicuting....");
-      const response = await api.post("/auth/login", { username, password });
-      console.log("Response Code of Login is : " + response.status);
-      console.log("Response Data of Login is : " + response.data);
-      console.log("response " + response.data);
-      if (response.status === 200) {
-        console.log("Login Successfull...");
-        const data = response.data;
-        updateUser = getCurrentUserDetails;
-        localStorage.setItem("USER", updateUser);
-        localStorage.setItem("ACCESS_TOKEN", data.accessToken);
-        localStorage.setItem("REFRESH_TOKEN", data.refreshToken);
-        showSuccessToast(response.data);
+      const response = await api.post("/auth/login", userCridentials);
+      if (response) {
+        const { accessToken, refreshToken } = response?.data;
+        // updateUser = getCurrentUserDetails;
+        localStorage.setItem("ACCESS_TOKEN", accessToken);
+        localStorage.setItem("REFRESH_TOKEN", refreshToken);
+        showSuccessToast("Login Success");
         navigate("/");
       } else {
-        setError("Invalid Email or Password");
-        showErrorToast("Invalid Credintials");
+        setError("Invalid Email or userPassword");
+        // showErrorToast("Invalid Credintials");
       }
     } catch (error) {
-      showErrorToast(error.message);
-      setError("Invalid Email or Password");
-      console.log("Invalid Email or Password");
-      console.log("Catch block getting exicutting...");
+      console.log(error);
+      // showErrorToast(error?.message);
+      console.log("Somting went wrong in login process...");
     } finally {
       stopLoading();
     }
@@ -59,7 +56,11 @@ const Login = ({ updateUser }) => {
   const handleLogin = (e) => {
     e.preventDefault();
     setError("");
-    login(username, password);
+    login(userCridentials);
+  };
+
+  const handleChange = (e) => {
+    setUserCridentials({ ...userCridentials, [e.target.name]: e.target.value });
   };
 
   return (
@@ -68,12 +69,16 @@ const Login = ({ updateUser }) => {
         <div className="row">
           <form
             onSubmit={handleLogin}
-            className="login-form card border-0 rounded-4 bg-light px-4 py-5 shadow d-flex flex-column gap-4"
+            className="login-form border-0 card rounded-4 bg-light px-4 py-5 shadow d-flex flex-column gap-4"
           >
-            <h2 className="card-title text-center">Login</h2>
-            <div className="card-body d-flex flex-column gap-4">
+            <h2 className="card-title text-center">Sign in User</h2>
+            <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
               {error && (
-                <span className="card border-danger bg-danger p-4 text-white text-center" data-aos="flip-down" data-aos-delay="100">
+                <span
+                  className="card border-danger bg-danger p-4 text-white text-center"
+                  data-aos="zoom-in"
+                  data-aos-delay="10"
+                >
                   {error}
                 </span>
               )}
@@ -82,37 +87,40 @@ const Login = ({ updateUser }) => {
                   Enter User Email
                 </label>
                 <input
+                  id="email"
                   type="email"
                   className="form-control"
-                  name="username"
-                  id="email"
                   placeholder="Enter the User Email"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  name="userName"
+                  value={userCridentials.userName}
+                  onChange={handleChange}
                 />
               </div>
               <div>
-                <label htmlFor="password" className="form-label">
+                <label htmlFor="userPassword" className="form-label">
                   Enter User Password
                 </label>
                 <input
-                  type="password"
+                  id="userPassword"
+                  type="userPassword"
                   className="form-control"
-                  id="password"
-                  placeholder="Enter the User Password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter the User userPassword"
+                  name="userPassword"
+                  value={userCridentials.userPassword}
+                  onChange={handleChange}
                 />
               </div>
-            </div>
-            <div className="btn-grp d-flex gap-5 align-items-center justify-content-center">
-              <a href="/" className="btn btn-danger rounded-3 px-3">
-                Cancel
-              </a>
-              <button className="btn btn-success rounded-3 px-3" type="submit">
-                Login
-              </button>
+              <div className="btn-grp d-flex gap-3 mt-4 align-items-center justify-content-center">
+                <a href="/" className="btn custom-btn w-100 rounded-5 px-3">
+                  Cancel
+                </a>
+                <button
+                  className="btn custom-btn w-100 rounded-5 px-3"
+                  type="submit"
+                >
+                  Sign in
+                </button>
+              </div>
             </div>
           </form>
         </div>

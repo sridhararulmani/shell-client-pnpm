@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.min.css";
 import { useEffect, useRef, useState } from "react";
-import getFileIntoBase64 from "../../Util/GetFileIntoBase64";
+import getFileIntoBase64 from "../../util/config/GetFileIntoBase64";
+import { getCurrentUserDetails } from "../../util/config/AuthSetGet";
+import api from "../../util/config/AxiosConfig";
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const [userProfile, setUserProfile] = useState();
+  const [user, setUser] = useState(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -13,6 +16,13 @@ const Navbar = ({ user }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const profileToggleRef = useRef(null);
+
+  useEffect(() => {
+    setUser(localStorage.getItem("ACCESS_TOKEN") != null ? "User" : null);
+    // getCurrentUserDetails();
+    const response = api.get("/get-login-user");
+    console.log(response);
+  }, []);
 
   const handleClickingOutside = (event) => {
     if (
@@ -38,7 +48,7 @@ const Navbar = ({ user }) => {
       user != null ? getFileIntoBase64(user.userProfile) : ""
     );
     console.log("User is " + user);
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     document.addEventListener("click", handleClickingOutside);
@@ -62,25 +72,25 @@ const Navbar = ({ user }) => {
           <i className="fa-brands fa-shopify"></i>Shell.
         </a>
         <div className="menu" data-aos="fade">
-          {user ? (
+          {!user ? (
             <div className="unAuth-menu">
               <NavLink
                 className="unAuth-menu-btn fw-bold rounded-4"
                 to={"/login"}
               >
-                Login
+                Sign in
               </NavLink>
               <NavLink
                 className="unAuth-menu-btn fw-bold rounded-4"
                 to={"/register"}
               >
-                Register
+                Sign up
               </NavLink>
             </div>
           ) : (
             <div className="menu-items gap-4" ref={menuRef}>
               <div className={`auth-menu shadow ${isOpen && "active"}`}>
-                <div className="auth-menu-items">
+                <div className="auth-menu-items" data-aos="slide-left">
                   <li className="auth-menu-item">
                     <NavLink className="auth-menu-btn fw-bold" to={"/"}>
                       Home

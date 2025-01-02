@@ -7,7 +7,7 @@ const AOSProvider = ({ children }) => {
   useEffect(() => {
     AOS.init({
       duration: 800, // Animation duration (in milliseconds)
-      easing: "ease-in-out",
+      easing: "ease-in-out-sine", //Starting and ending smooth effect
       once: true, // Only animate once
     });
   }, []);

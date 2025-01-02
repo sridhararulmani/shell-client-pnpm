@@ -18,8 +18,8 @@ label {
   gap: 20px;
 }
 .img {
-  height: 120px;
-  width: 120px;
+  height: 150px;
+  width: 150px;
   cursor: pointer;
   overflow: hidden;
   border: 1px dashed;
@@ -28,6 +28,18 @@ label {
   height: inherit;
   object-fit: cover;
   width: inherit;
+}
+.img-upload-top-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  /* top: 0; */
+  bottom: 0;
+  position: absolute;
+  z-index: 2;
+  background-color: rgba(148, 146, 146, 0.411);
+  /* opacity: 10; */
 }
 .alert {
   top: 40%;
@@ -39,5 +51,4 @@ label {
     width: 100%;
     gap: 10px;
   }
-
 }

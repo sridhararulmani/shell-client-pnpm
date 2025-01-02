@@ -2,15 +2,22 @@ import "./RegisterUserPage.min.css";
 import React, { useRef, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import api from "../../../../Util/AxiosConfig";
-import { useNavigate } from "react-router-dom";
-import { useLoading } from "../../../../Util/LoadingContext";
+import api from "../../../../util/config/AxiosConfig";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useLoading } from "../../../../util/context/LoadingContext";
+import {
+  showErrorToast,
+  showWarningToast,
+} from "../../../../util/constant/ToastUtil";
 
 const Register = () => {
+  const { startLoading, stopLoading } = useLoading();
+
   const [profileImage, setProfileImage] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
+
   const navigate = useNavigate();
-  const { startLoading, stopLoading } = useLoading();
+  const location = useLocation();
 
   const profileImageInputBox = useRef(null);
 
@@ -45,7 +52,7 @@ const Register = () => {
       .required("User Password is Mandatory"),
   });
 
-  const handleFileChange = (event) => {
+  const handleImageFileChange = (event) => {
     const file = event.target.files[0];
     setProfileImage(file);
     if (file) {
@@ -59,21 +66,22 @@ const Register = () => {
     formData.append("userName", values.userName);
     formData.append("userEmail", values.userEmail);
     formData.append("userPassword", values.userPassword);
-    if (profileImage) {
-      console.log("Image file is present");
-      formData.append("userProfile", profileImage);
-    } else {
-      console.log("Image File is not present");
-    }
+    profileImage != null && formData.append("userProfileImage", profileImage);
+
     try {
       const response = await api.post("/user/registerUser", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      if (response.status === 201) {
+      const { status, message } = response?.data;
+      if (status === 201) {
         navigate("/");
-        alert("User Registered Successfully...");
+      } else {
+        showWarningToast(message);
       }
     } catch (error) {
+      showErrorToast(error?.response?.message);
       if (error.response && error.response.status === 400) {
         const serverErrors = {};
         error.response.data.forEach((err) => {
@@ -91,93 +99,91 @@ const Register = () => {
     <div className="container p-3" data-aos="fade">
       <div className="row">
         <Formik
+          key={location.pathname}
+          enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleRegister}
         >
           {({ isSubmitting, setFieldValue }) => (
-            <Form className="card register-form border-0 bg-light shadow rounded-4 py-5 px-4 d-flex flex-column gap-4">
-              {isSubmitting && (
-                <div className="alert bg-primary text-white p-4 opacity-75">
-                  <span>Please wait Registation is Processing...</span>
-                </div>
-              )}
-              <h2 className="card-title text-center">Register New User</h2>
+            <Form
+              encType="multipart/form-data"
+              autoComplete="false"
+              className="card register-form border-0 bg-light shadow rounded-4 py-5 px-4 d-flex flex-column gap-4"
+            >
+              <h2 className="card-title text-center">Sign up New User</h2>
               <div className="card-body d-flex flex-column gap-4">
                 <div className="image-uploader d-felx flex-column align-items-center justify-content-center">
                   <div
-                    className="img shadow rounded-circle d-flex align-items-center justify-content-center"
+                    className="img shadow bg-white rounded-4 d-flex align-items-center justify-content-center position-relative"
                     onClick={activateProfileImageInputBoxFunction}
                   >
-                    {filePreview ? (
+                    {filePreview != null && (
                       <img
                         src={filePreview}
                         alt="Set Profile Image"
                         className="profile-img"
                       />
-                    ) : (
-                      <span className="d-flex flex-column gap-2 align-items-center justify-content-center">
-                        <i className="fa-solid fa-plus fs-4"></i>
-                      </span>
                     )}
+                    <div className="img-upload-top-content w-100">
+                      <input
+                        placeholder="Set the User Profile"
+                        name="userProfileImage"
+                        type="file"
+                        className="form-control profileImageInputBox"
+                        id="profileImageInputBox"
+                        onChange={(event) => {
+                          handleImageFileChange(event);
+                          setProfileImage(event.currentTarget.files[0]);
+                          setFieldValue(
+                            "userProfileImage",
+                            event.currentTarget.files[0]
+                          );
+                        }}
+                        ref={profileImageInputBox}
+                        hidden
+                      />
+                      <ErrorMessage
+                        name="userProfileImage"
+                        className="text-danger"
+                        component={"div"}
+                      />
+                      <div className="img-upload-btns d-flex flex-column align-items-center justify-content-center w-100">
+                        <div
+                          className="d-flex align-items-center justify-content-center w-100"
+                          onClick={activateProfileImageInputBoxFunction}
+                        >
+                          <span className="text-center text-white fw-bold">
+                            {filePreview == null
+                              ? "Set Profile"
+                              : "Change Profile"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    placeholder="Set the User Profile"
-                    name="userProfile"
-                    type="file"
-                    className="form-control profileImageInputBox"
-                    id="profileImageInputBox"
-                    onChange={(event) => {
-                      handleFileChange(event);
-                      setProfileImage(event.currentTarget.files[0]);
-                      setFieldValue(
-                        "userProfile",
-                        event.currentTarget.files[0]
-                      );
-                    }}
-                    ref={profileImageInputBox}
-                    hidden
-                  />
-                  <ErrorMessage
-                    name="userProfile"
-                    className="text-danger"
-                    component={"div"}
-                  />
-                  <div className="img-upload-btns d-flex gap-2">
+                  {filePreview && (
                     <button
                       type="button"
-                      className="btn btn-sm btn-primary rounded-circle shadow"
-                      onClick={activateProfileImageInputBoxFunction}
+                      className="btn btn-sm btn-danger rounded-circle shadow"
+                      onClick={removeProfileImage}
                     >
-                      <i
-                        className={
-                          filePreview
-                            ? "fa-solid fa-rotate"
-                            : "fa-solid fa-arrow-up-from-bracket"
-                        }
-                      ></i>
+                      <i className="fa-solid fa-trash-can"></i>
                     </button>
-                    {filePreview && (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-danger rounded-circle shadow"
-                        onClick={removeProfileImage}
-                      >
-                        <i className="fa-solid fa-trash-can"></i>
-                      </button>
-                    )}
-                  </div>
+                  )}
                 </div>
 
                 <div>
-                  <label htmlFor="" className="form-label">
+                  <label htmlFor="userName" className="form-label">
                     Enter the User Name
                   </label>
                   <Field
+                    id="userName"
                     name="userName"
                     type="text"
                     className="form-control"
                     placeholder="Set the User Name"
+                    auto
                   />
                   <ErrorMessage
                     className="text-danger"
@@ -186,10 +192,11 @@ const Register = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="" className="form-label">
+                  <label htmlFor="userEmail" className="form-label">
                     Enter the User Email
                   </label>
                   <Field
+                    id="userEmail"
                     name="userEmail"
                     type="text"
                     className="form-control"
@@ -202,10 +209,11 @@ const Register = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="" className="form-label">
+                  <label htmlFor="userPassword" className="form-label">
                     Enter your User Password
                   </label>
                   <Field
+                    id="userPassword"
                     placeholder="Set the User Password"
                     name="userPassword"
                     type="password"
@@ -217,23 +225,23 @@ const Register = () => {
                     component={"div"}
                   />
                 </div>
-              </div>
-              <div className="d-flex align-items-center justify-content-center">
-                <div className="d-flex gap-5">
-                  <a
-                    href="/"
-                    className="btn btn-danger"
-                    disabled={isSubmitting}
-                  >
-                    Cancel
-                  </a>
-                  <button
-                    type="submit"
-                    className="btn btn-success"
-                    disabled={isSubmitting}
-                  >
-                    Register
-                  </button>
+                <div className="mt-4 d-flex align-items-center justify-content-center">
+                  <div className="d-flex gap-3 w-100">
+                    <a
+                      href="/"
+                      className="btn custom-btn w-100 rounded-5"
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </a>
+                    <button
+                      type="submit"
+                      className="btn custom-btn w-100 rounded-5"
+                      disabled={isSubmitting}
+                    >
+                      Sign up
+                    </button>
+                  </div>
                 </div>
               </div>
             </Form>
