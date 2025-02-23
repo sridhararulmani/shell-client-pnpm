@@ -1,39 +1,19 @@
-/* .Toastify__toast-container { */
-  /* Set the height of the toast container */
-  /* max-width: 300px; */
-/* } */
+:root {
+  --dark-primary-baground-color: rgb(33, 37, 41);
+  --light-primary-baground-color: rgb();
 
-.Toastify__toast {
-  /* background-color: #333; Background color for the toast */
-  font-size: small;
-  letter-spacing: 0.5px;
-  color: black; /* Text color */
-  border-radius: 8px; /* Rounded corners */
-  padding: 15px 20px; /* Padding inside the toast */
-}
+  --dark-secondary-baground-color: rgb();
+  --light-secondary-baground-color: rgb();
 
-/* Example for customizing the position */
-.Toastify__toast-container--top-right {
-  /* Adjust vertical position */
-  top: 13svh;
-  padding: 10px;
-  /* right: 20px; */
-  /* right: 10px; Adjust horizontal position */
-}
-/* .Toastify__toast--success { */
-  /* background-color: rgba(0, 255, 55, 0.60);  */
-  /* Progress bar color for success toasts */
-/* } */
+  --dark-primary-text-color: rgb();
+  --light-primary-text-color: rgb();
 
-/* .Toastify__toast--error { */
-  /* background-color: rgb(243, 161, 161);  */
-  /* Progress bar color for error toasts */
-/* } */
+  --dark-secondary-text-color: rgb();
+  --light-secondary-text-color: rgb();
 
-@media (max-width: 800px) {
-  .Toastify__toast-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  --dark-primary-button-color: rgb();
+  --light-primary-button-color: rgb();
+
+  --dark-secondary-button-color: rgb();
+  --light-secondary-button-color: rgb();
 }

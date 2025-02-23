@@ -1,29 +1,28 @@
 import "./RegisterUserPage.min.css";
 import React, { useRef, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../util/config/AxiosConfig";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../../../util/context/LoadingContext";
+import { showWarningToast } from "../../../../util/constant/ToastUtil";
+import AppConstant from "../../../../util/constant/AppConstant";
+import { Box, TextField, IconButton, Avatar } from "@mui/material";
 import {
-  showErrorToast,
-  showWarningToast,
-} from "../../../../util/constant/ToastUtil";
+  APP_MUI_INPUT_FIELD_SIZE,
+  APP_MUI_INPUT_FIELD_VARIENT,
+} from "../../../../util/constant/AppUtils";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Register = () => {
   const { startLoading, stopLoading } = useLoading();
+  const { CancelButton, SubmitButton } = AppConstant();
 
   const [profileImage, setProfileImage] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const profileImageInputBox = useRef(null);
-
-  const activateProfileImageInputBoxFunction = () => {
-    profileImageInputBox.current.click();
-  };
 
   const removeProfileImage = () => {
     setProfileImage(null);
@@ -32,43 +31,68 @@ const Register = () => {
 
   const initialValues = {
     userName: "",
+    mobileNumber: "",
     userEmail: "",
     userPassword: "",
+    confirmPassword: "",
+  };
+
+  const serverErrors = {};
+
+  const feileRef = {
+    userName: useRef(),
+    userEmail: useRef(),
+    userPassword: useRef(),
+    confirmPassword: useRef(),
   };
 
   const validationSchema = Yup.object({
     userName: Yup.string()
-      .min(3, "User Name must be between 3 to 2o characters")
-      .max(20, "User Name must be between 3 to 2o characters")
-      .required("User Name is Mandatory"),
+      .min(3, "User Name must be between 3 to 20 characters")
+      .max(20, "User Name must be between 3 to 20 characters")
+      .required("User Name is Required"),
+    mobileNumber: Yup.string()
+      .matches(/^[0-9]{10}$/, "Please Provaid Valid Mobile Number")
+      .nullable(),
     userEmail: Yup.string()
-      .required("Email is Mandatory")
+      .required("Email is Required")
       .email("Email should be valid"),
     userPassword: Yup.string()
-      .matches(/.*[a-zA-Z].*/, "Pasword should contain 1 character.")
-      .matches(/.*\d.*/, "Pasword should contain 1 Digit.")
-      .matches(/.*[@#$%^&+=].*/, "Pasword should contain 1 special character.")
-      .min(6, "User Password should have minimum 6 letters")
-      .required("User Password is Mandatory"),
+      .matches(
+        /.*[A-Z].*/,
+        "Password must contain at least 1 upper case letter"
+      )
+      .matches(
+        /.*[a-z].*/,
+        "Password must contain at least 1 lower case letter"
+      )
+      .matches(
+        /.*[A-Za-z].*[a-zA-Z].*[A-Za-z].*/,
+        "Password must contain at least 3 letters"
+      )
+      .matches(/.*\d.*/, "Password must contain at least 1 digit")
+      .matches(/.*[@#$%^&+=].*/, "Pasword should contain 1 special character")
+      .min(8, "User Password should be between 8 to 16 characters")
+      .max(16, "User Password should be between 8 to 16 characters")
+      .required("User Password is Required."),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("userPassword"), null], "Entered Password is Not Matched")
+      .required("Congirm the Enterd Password"),
   });
 
-  const handleImageFileChange = (event) => {
-    const file = event.target.files[0];
-    setProfileImage(file);
-    if (file) {
-      setFilePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleRegister = async (values, { setSubmitting, setErrors }) => {
+  const handleUserRegister = async (values, setSubmitting, setFieldError) => {
     startLoading();
-    const formData = new FormData();
-    formData.append("userName", values.userName);
-    formData.append("userEmail", values.userEmail);
-    formData.append("userPassword", values.userPassword);
-    profileImage != null && formData.append("userProfileImage", profileImage);
-
     try {
+      const formData = new FormData();
+      formData.append("userName", values.userName);
+      formData.append("mobileNumber", values.mobileNumber);
+      formData.append("userEmail", values.userEmail);
+      formData.append("userPassword", values.userPassword);
+      profileImage != null &&
+        formData.append("userProfileImage", profileImage ?? null);
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:${value}`);
+      }
       const response = await api.post("/user/registerUser", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -76,18 +100,19 @@ const Register = () => {
       });
       const { status, message } = response?.data;
       if (status === 201) {
+        // showSuccessToast(message);
         navigate("/");
       } else {
         showWarningToast(message);
       }
     } catch (error) {
-      showErrorToast(error?.response?.message);
-      if (error.response && error.response.status === 400) {
-        const serverErrors = {};
-        error.response.data.forEach((err) => {
-          serverErrors[err.field] = err.defaultMessage;
+      // showErrorToast(error?.response?.message);
+      if (error?.response && error?.status === 400) {
+        const serverErrors = error?.response?.data;
+        Object.keys(serverErrors).forEach((field) => {
+          console.log(`${field}:${serverErrors[field]}`);
+          setFieldError(field, serverErrors[field]);
         });
-        setErrors(serverErrors);
       }
     } finally {
       setSubmitting(false);
@@ -95,158 +120,227 @@ const Register = () => {
     }
   };
 
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema,
+    validateOnBlur: true,
+    validateOnChange: true,
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+      handleUserRegister(values, setSubmitting, setFieldError);
+    },
+  });
+
+  const handleValidateFields = () => {
+    const firstInValidField = Object.keys(formik.errors)[0];
+    if (firstInValidField) {
+      feileRef[firstInValidField].current.focus();
+    }
+  };
+
+  const profileImageInputBox = useRef();
+
+  const activateProfileImageInputBoxFunction = () => {
+    profileImageInputBox.current.click();
+  };
+
+  const handleImageFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
+      setProfileImage(file);
+      setFilePreview(objectUrl);
+      formik.setFieldValue("userProfileImage", file);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  };
+
   return (
     <div className="container p-3" data-aos="fade">
       <div className="row">
-        <Formik
-          key={location.pathname}
-          enableReinitialize={true}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleRegister}
-        >
-          {({ isSubmitting, setFieldValue }) => (
-            <Form
-              encType="multipart/form-data"
-              autoComplete="false"
-              className="card register-form border-0 bg-light shadow rounded-4 py-5 px-4 d-flex flex-column gap-4"
+        <div className="card register-form border-0 bg-light shadow-sm rounded-4 p-5 d-flex flex-column gap-4">
+          <h4 className="card-title text-center">Sign up New User</h4>
+          <div className="image-uploader d-felx flex-column align-items-center justify-content-center">
+            <Box
+              sx={{
+                width: 130,
+                height: 130,
+                position: "relative",
+                borderRadius: "100%",
+                backgroundColor: "transparent",
+                transition: "all 0.5s ease-in-out",
+                boxShadow: 1,
+              }}
             >
-              <h2 className="card-title text-center">Sign up New User</h2>
-              <div className="card-body d-flex flex-column gap-4">
-                <div className="image-uploader d-felx flex-column align-items-center justify-content-center">
-                  <div
-                    className="img shadow bg-white rounded-4 d-flex align-items-center justify-content-center position-relative"
-                    onClick={activateProfileImageInputBoxFunction}
-                  >
-                    {filePreview != null && (
-                      <img
-                        src={filePreview}
-                        alt="Set Profile Image"
-                        className="profile-img"
-                      />
-                    )}
-                    <div className="img-upload-top-content w-100">
-                      <input
-                        placeholder="Set the User Profile"
-                        name="userProfileImage"
-                        type="file"
-                        className="form-control profileImageInputBox"
-                        id="profileImageInputBox"
-                        onChange={(event) => {
-                          handleImageFileChange(event);
-                          setProfileImage(event.currentTarget.files[0]);
-                          setFieldValue(
-                            "userProfileImage",
-                            event.currentTarget.files[0]
-                          );
-                        }}
-                        ref={profileImageInputBox}
-                        hidden
-                      />
-                      <ErrorMessage
-                        name="userProfileImage"
-                        className="text-danger"
-                        component={"div"}
-                      />
-                      <div className="img-upload-btns d-flex flex-column align-items-center justify-content-center w-100">
-                        <div
-                          className="d-flex align-items-center justify-content-center w-100"
-                          onClick={activateProfileImageInputBoxFunction}
-                        >
-                          <span className="text-center text-white fw-bold">
-                            {filePreview == null
-                              ? "Set Profile"
-                              : "Change Profile"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {filePreview && (
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger rounded-circle shadow"
-                      onClick={removeProfileImage}
-                    >
-                      <i className="fa-solid fa-trash-can"></i>
-                    </button>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="userName" className="form-label">
-                    Enter the User Name
-                  </label>
-                  <Field
-                    id="userName"
-                    name="userName"
-                    type="text"
-                    className="form-control"
-                    placeholder="Set the User Name"
-                    auto
-                  />
-                  <ErrorMessage
-                    className="text-danger"
-                    name="userName"
-                    component={"div"}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="userEmail" className="form-label">
-                    Enter the User Email
-                  </label>
-                  <Field
-                    id="userEmail"
-                    name="userEmail"
-                    type="text"
-                    className="form-control"
-                    placeholder="Set the User Email"
-                  />
-                  <ErrorMessage
-                    className="text-danger"
-                    name="userEmail"
-                    component={"div"}
-                  />
-                </div>
-                <div>
-                  <label htmlFor="userPassword" className="form-label">
-                    Enter your User Password
-                  </label>
-                  <Field
-                    id="userPassword"
-                    placeholder="Set the User Password"
-                    name="userPassword"
-                    type="password"
-                    className="form-control"
-                  />
-                  <ErrorMessage
-                    name="userPassword"
-                    className="text-danger"
-                    component={"div"}
-                  />
-                </div>
-                <div className="mt-4 d-flex align-items-center justify-content-center">
-                  <div className="d-flex gap-3 w-100">
-                    <a
-                      href="/"
-                      className="btn custom-btn w-100 rounded-5"
-                      disabled={isSubmitting}
-                    >
-                      Cancel
-                    </a>
-                    <button
-                      type="submit"
-                      className="btn custom-btn w-100 rounded-5"
-                      disabled={isSubmitting}
-                    >
-                      Sign up
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Form>
-          )}
-        </Formik>
+              <Avatar
+                alt="Profile image"
+                src={filePreview}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  transition: "all 0.5s ease-in-out",
+                }}
+              ></Avatar>
+              <input
+                id="profileImageInputBox"
+                name="userProfileImage"
+                type="file"
+                accept="image/jpeg ,image/png, image/gif"
+                className="form-control profileImageInputBox"
+                placeholder="Set the User Profile"
+                onChange={handleImageFileChange}
+                ref={profileImageInputBox}
+                hidden
+              />
+              {filePreview && (
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    // size: "medium",
+                    top: 0,
+                    right: 0,
+                    backgroundColor: "ButtonFace",
+                    color: "red",
+                    boxShadow: 2,
+                    "&:hover": {
+                      backgroundColor: "ButtonHighlight",
+                    },
+                  }}
+                  onClick={removeProfileImage}
+                >
+                  <CloseRoundedIcon sx={{ fontSize: "medium" }} />
+                </IconButton>
+              )}
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  size: "small",
+                  bottom: 0,
+                  left: 0,
+                  backgroundColor: "ButtonFace",
+                  color: "blue",
+                  boxShadow: 2,
+                  "&:hover": {
+                    backgroundColor: "ButtonHighlight",
+                  },
+                }}
+                onClick={activateProfileImageInputBoxFunction}
+              >
+                <AddRoundedIcon sx={{ fontSize: "medium" }} />
+              </IconButton>
+            </Box>
+          </div>
+          <Box
+            component="form"
+            encType="multipart/form-data"
+            onSubmit={(e) => {
+              e.preventDefault();
+              formik.handleSubmit();
+              handleValidateFields();
+            }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+              width: "100%",
+            }}
+          >
+            <TextField
+              label="Enter the User Name"
+              variant={APP_MUI_INPUT_FIELD_VARIENT}
+              type="text"
+              name="userName"
+              value={formik.values.userName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.userName && Boolean(formik.errors.userName)}
+              helperText={formik.touched.userName && formik.errors.userName}
+              inputRef={feileRef.userName}
+              size={APP_MUI_INPUT_FIELD_SIZE}
+              fullWidth
+            />
+            <TextField
+              label="Enter the your Mobile Number"
+              variant={APP_MUI_INPUT_FIELD_VARIENT}
+              type="number"
+              InputProps={{ inputMode: "numeric" }}
+              name="mobileNumber"
+              value={formik.values.mobileNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.mobileNumber &&
+                Boolean(formik.errors.mobileNumber)
+              }
+              helperText={
+                formik.touched.mobileNumber && formik.errors.mobileNumber
+              }
+              inputRef={feileRef.mobileNumber}
+              size={APP_MUI_INPUT_FIELD_SIZE}
+              fullWidth
+            />
+            <TextField
+              label="Enter the User Email"
+              variant={APP_MUI_INPUT_FIELD_VARIENT}
+              type="email"
+              name="userEmail"
+              value={formik.values.userEmail}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.userEmail && Boolean(formik.errors.userEmail)
+              }
+              helperText={formik.touched.userEmail && formik.errors.userEmail}
+              inputRef={feileRef.userEmail}
+              size={APP_MUI_INPUT_FIELD_SIZE}
+              fullWidth
+            />
+            <TextField
+              label="Set User Password"
+              variant={APP_MUI_INPUT_FIELD_VARIENT}
+              type="password"
+              name="userPassword"
+              value={formik.values.userPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.userPassword &&
+                Boolean(formik.errors.userPassword)
+              }
+              helperText={
+                formik.touched.userPassword && formik.errors.userPassword
+              }
+              inputRef={feileRef.userPassword}
+              size={APP_MUI_INPUT_FIELD_SIZE}
+              fullWidth
+            />
+            <TextField
+              label="Confirm User Password"
+              variant={APP_MUI_INPUT_FIELD_VARIENT}
+              type="password"
+              name="confirmPassword"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.confirmPassword &&
+                Boolean(formik.errors.confirmPassword)
+              }
+              helperText={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
+              inputRef={feileRef.confirmPassword}
+              size={APP_MUI_INPUT_FIELD_SIZE}
+              fullWidth
+            />
+            <div className="mt-4 d-flex flex-column gap-3 align-items-center justify-content-center">
+              <SubmitButton
+                type="submit"
+                buttonText="Sign Up"
+                isDisable={!formik.isValid}
+              />
+              <CancelButton />
+            </div>
+          </Box>
+        </div>
       </div>
     </div>
   );

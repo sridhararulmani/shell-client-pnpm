@@ -7,6 +7,7 @@
   justify-content: center;
   position: sticky;
   top: 0;
+  height: 10svh;
   z-index: 1000;
 }
 .menu {
@@ -37,7 +38,7 @@
   color: black;
 }
 .unAuth-menu-btn.active {
-  background-color: white;
+  background-color: #ffffff;
   color: black;
 }
 .auth-menu {
@@ -65,7 +66,7 @@
   color: rgb(133, 133, 133);
   letter-spacing: 0.5px;
   font-size: small;
-  transition: .3s all ease-in-out;
+  transition: 0.3s all ease-in-out;
 }
 .auth-menu .auth-menu-btn:hover:not(.active) {
   letter-spacing: 3px;
@@ -79,15 +80,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  transition: all 1s ease-in-out;
 }
 .menu-items {
   display: flex;
   align-items: center;
 }
 .menu-details .user-profile-image-container {
-  height: 35px;
-  width: 35px;
-  border-radius: 100px;
+  height: 43px;
+  width: 43px;
   object-fit: cover;
   overflow: hidden;
   cursor: pointer;
@@ -98,23 +99,22 @@
 }
 .profile-menu {
   position: absolute;
-  top: 105%;
+  top: 10svh;
   right: 1%;
   color: white;
   background-color: rgb(65, 65, 65);
   opacity: 95%;
+  transition: all 1s ease-in-out !important;
 }
+
 @media (max-width: 800px) {
-  .navbar {
-    height: 12svh;
-  }
   .menu-items {
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .menu-details {
-    gap: 20px;
+    gap: 15px;
   }
   .unAuth-menu .unAuth-menu-btn {
     font-size: small;
@@ -129,14 +129,15 @@
     align-items: start;
     justify-content: start;
     /* border: 5px solid red; */
-    top: 180%;
-    right: 1%;
+    top: 10svh;
+    right: 0%;
     opacity: 90%;
     padding: 40px 20px;
     border-radius: 8px;
     gap: 10px;
     width: 80svw;
     background-color: rgb(65, 65, 65);
+    transition: all 1s ease-in-out;
   }
   .auth-menu-items {
     width: 100%;
@@ -200,5 +201,4 @@
   .close-icon span:nth-child(2) {
     transform: rotate(-45deg) translate(5px, -7px);
   }
-
 }

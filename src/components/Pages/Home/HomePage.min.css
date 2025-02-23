@@ -1,6 +1,13 @@
-@media (max-width:800px) {
-    .container .row{
-        display: flex;
-        flex-direction: column;
-    }
+.profile-card {
+  width: 25%;
+  height: 350px;
+}
+@media (max-width: 800px) {
+  .container .row {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-card {
+    width: 100%;
+  }
 }

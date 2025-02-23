@@ -1,13 +1,25 @@
-import { NavLink } from "react-router-dom";
 import "./Navbar.min.css";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { getAccessToken } from "../../util/config/AxiosConfig";
+
+import AppSkeleton from "../../util/skeleton/AppSkeleton";
 import getFileIntoBase64 from "../../util/config/GetFileIntoBase64";
-import { getCurrentUserDetails } from "../../util/config/AuthSetGet";
-import api from "../../util/config/AxiosConfig";
+import { Avatar, Box } from "@mui/material";
+import { appAuthMenu, appUnAuthMenu } from "../../util/constant/AppMenu";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const [userProfile, setUserProfile] = useState();
-  const [user, setUser] = useState(null);
+
+  const { TextSkeleton } = AppSkeleton();
+
+  let user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    setIsLoggedIn(getAccessToken() != null ? true : false);
+  }, [localStorage.getItem("ACCESS_TOKEN")]);
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -16,13 +28,6 @@ const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const profileToggleRef = useRef(null);
-
-  useEffect(() => {
-    setUser(localStorage.getItem("ACCESS_TOKEN") != null ? "User" : null);
-    // getCurrentUserDetails();
-    const response = api.get("/get-login-user");
-    console.log(response);
-  }, []);
 
   const handleClickingOutside = (event) => {
     if (
@@ -43,20 +48,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    setUserProfile(() =>
-      user != null ? getFileIntoBase64(user.userProfile) : ""
-    );
-    console.log("User is " + user);
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickingOutside);
-    return () => {
-      document.removeEventListener("click", handleClickingOutside);
-    };
-  }, []);
-
   const handleHamburger = () => {
     setIsOpen(!isOpen);
   };
@@ -65,52 +56,53 @@ const Navbar = () => {
     setIsProfileOpen(!isProfileOpen);
   };
 
+  useEffect(() => {
+    setUserProfile(() =>
+      user != null
+        ? getFileIntoBase64(user.profileImage, user.profileImageType)
+        : ""
+    );
+  }, [user]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickingOutside);
+    return () => {
+      document.removeEventListener("click", handleClickingOutside);
+    };
+  }, []);
+
   return (
-    <header className="navbar navbar-expand-lg w-100 navbar-dark bg-dark py-3 shadow-sm">
+    <header
+      className="navbar navbar-expand-lg w-100 navbar-dark bg-dark shadow-sm"
+      data-aos="slide-down"
+    >
       <div className="container d-flex flex-row align-items-center justify-content-between">
-        <a href="/" className="navbar-brand fs-3 fw-bold" data-aos="fade">
+        <a
+          href="/"
+          className="navbar-brand fs-3 fw-bold"
+          data-aos="fade"
+          tabIndex="-1"
+        >
           <i className="fa-brands fa-shopify"></i>Shell.
         </a>
         <div className="menu" data-aos="fade">
-          {!user ? (
-            <div className="unAuth-menu">
-              <NavLink
-                className="unAuth-menu-btn fw-bold rounded-4"
-                to={"/login"}
-              >
-                Sign in
-              </NavLink>
-              <NavLink
-                className="unAuth-menu-btn fw-bold rounded-4"
-                to={"/register"}
-              >
-                Sign up
-              </NavLink>
-            </div>
-          ) : (
+          {isLoggedIn ? (
             <div className="menu-items gap-4" ref={menuRef}>
-              <div className={`auth-menu shadow ${isOpen && "active"}`}>
+              <div className={`auth-menu shadow-sm ${isOpen && "active"}`}>
                 <div className="auth-menu-items" data-aos="slide-left">
-                  <li className="auth-menu-item">
-                    <NavLink className="auth-menu-btn fw-bold" to={"/"}>
-                      Home
-                    </NavLink>
-                  </li>
-                  <li className="auth-menu-item">
-                    <NavLink className="auth-menu-btn fw-bold" to={"/shop"}>
-                      Shop
-                    </NavLink>
-                  </li>
-                  <li className="auth-menu-item">
-                    <NavLink className="auth-menu-btn fw-bold" to={"/about"}>
-                      About
-                    </NavLink>
-                  </li>
-                  <li className="auth-menu-item">
-                    <NavLink className="auth-menu-btn fw-bold" to={"/logout"}>
-                      Logout
-                    </NavLink>
-                  </li>
+                  {appAuthMenu.map((menu, index) => {
+                    return (
+                      <li className="auth-menu-item" key={menu.id || index}>
+                        <NavLink
+                          className="auth-menu-btn fw-bold"
+                          to={menu.url}
+                          onClick={() => handleHamburger()}
+                        >
+                          {menu.title}
+                        </NavLink>
+                      </li>
+                    );
+                  })}
                 </div>
               </div>
               <div className="menu-details">
@@ -132,27 +124,38 @@ const Navbar = () => {
                     </div>
                   )}
                 </div>
-                <span
-                  className="user-profile-image-container border"
+                <Box
+                  // className="user-profile-image-container rounded-circle border border-light"
+                  data-aos="flip-right"
+                  data-aos-delay="900"
                   onClick={handleProfileMenu}
+                  ref={profileToggleRef}
                 >
-                  {userProfile && (
-                    <img
-                      src={userProfile}
-                      alt="user-profile-image"
-                      className="user-profile-image"
-                      ref={profileToggleRef}
-                    />
-                  )}
-                </span>
+                  <Avatar
+                    alt="User profile"
+                    src={userProfile}
+                    sx={{
+                      transition: "all 0.5s ease-in-out",
+                      cursor: "pointer",
+                    }}
+                  ></Avatar>
+                </Box>
                 {isProfileOpen && (
                   <div
-                    className="profile-menu p-5 rounded shadow"
+                    className="profile-menu p-4 rounded shadow-sm"
                     ref={profileMenuRef}
                   >
-                    <p className="text-wrap">{user.userName}</p>
+                    <TextSkeleton
+                      className="text-wrap"
+                      text={user.userName}
+                      delay={500}
+                    />
                     <hr />
-                    <p className="text-wrap">{user.userEmail}</p>
+                    <TextSkeleton
+                      className="text-wrap"
+                      text={user.userEmail}
+                      delay={500}
+                    />
                     <hr />
                     <a href="" className="text-white">
                       Settings
@@ -160,6 +163,20 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
+            </div>
+          ) : (
+            <div className="unAuth-menu">
+              {appUnAuthMenu?.map((menu, index) => {
+                return (
+                  <NavLink
+                    className="unAuth-menu-btn fw-bold rounded-4"
+                    key={menu.id || index}
+                    to={menu.url}
+                  >
+                    {menu.title}
+                  </NavLink>
+                );
+              })}
             </div>
           )}
         </div>

@@ -1,34 +1,43 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import {
+  ABOUT_PAGE_URL,
+  HOME_PAGE_URL,
+  SHOP_PAGE_URL,
+  SIGN_IN_PAGE_URL,
+  SIGN_OUT_PAGE_URL,
+  SIGN_UP_PAGE_URL,
+} from "../constant/AppUrlConstant";
+import { useNavigationHistory } from "../context/NavigationProvaider";
 
 const PageTitile = () => {
   const location = useLocation();
 
+  const { pushPath } = useNavigationHistory();
+
   useEffect(() => {
+    pushPath(location.pathname);
     switch (location.pathname) {
-      case "/":
+      case HOME_PAGE_URL:
         document.title = "Shell | Welcome to Shell";
         break;
-      case "/login":
+      case SIGN_IN_PAGE_URL:
         document.title = "Shell | Account Login";
         break;
-      case "/logout":
+      case SIGN_OUT_PAGE_URL:
         document.title = "Shell | Account Logout";
         break;
-      case "/register":
+      case SIGN_UP_PAGE_URL:
         document.title = "Shell | Account Register";
         break;
-      case "/home":
-        document.title = "Shell | Home";
-        break;
-      case "/about":
+      case ABOUT_PAGE_URL:
         document.title = "Shell | About Shell";
         break;
-      case "/shop":
+      case SHOP_PAGE_URL:
         document.title = "Shell | Shoping";
         break;
     }
-  });
+  }, [location.pathname]);
 };
 
 export default PageTitile;

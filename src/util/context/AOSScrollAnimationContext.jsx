@@ -8,7 +8,9 @@ const AOSProvider = ({ children }) => {
     AOS.init({
       duration: 800, // Animation duration (in milliseconds)
       easing: "ease-in-out-sine", //Starting and ending smooth effect
-      once: true, // Only animate once
+      once: false,
+      // once: true,
+      mirror: true, // Only animate once
     });
   }, []);
 
