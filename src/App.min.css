@@ -1,12 +1,12 @@
 :root {
   --dark-primary-baground-color: rgb(33, 37, 41);
-  --light-primary-baground-color: rgb();
+  --light-primary-baground-color: rgb(236, 239, 243);
 
   --dark-secondary-baground-color: rgb();
   --light-secondary-baground-color: rgb();
 
-  --dark-primary-text-color: rgb();
-  --light-primary-text-color: rgb();
+  --dark-primary-text-color: rgb(#ffffff);
+  --light-primary-text-color: rgb(black);
 
   --dark-secondary-text-color: rgb();
   --light-secondary-text-color: rgb();
@@ -16,4 +16,10 @@
 
   --dark-secondary-button-color: rgb();
   --light-secondary-button-color: rgb();
+
+  --dark-active-btn-color: #ffffff;
+  --light-active-btn-color: black;
+
+  --dark-primary-button-hover-color: rgba(167, 167, 167, 0.555);
+  --light-primary-button-hover-color: rgba(92, 92, 92, 0.555);
 }

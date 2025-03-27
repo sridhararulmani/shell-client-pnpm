@@ -25,6 +25,9 @@ const NavigationProvaider = ({ children }) => {
         }
         navigate(navPath);
         return newHistory;
+      } else {
+        navigate(HOME_PAGE_URL);
+        return HOME_PAGE_URL;
       }
       return prev;
     });

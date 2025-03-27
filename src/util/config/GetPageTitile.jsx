@@ -8,7 +8,7 @@ import {
   SIGN_OUT_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from "../constant/AppUrlConstant";
-import { useNavigationHistory } from "../context/NavigationProvaider";
+import { useNavigationHistory } from "../context/NavigationContext.jsx";
 
 const PageTitile = () => {
   const location = useLocation();

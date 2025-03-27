@@ -46,12 +46,12 @@ const Logout = () => {
   };
 
   return (
-    <div className="container p-3" data-aos="fade">
+    <div className="p-3" data-aos="fade">
       <div className="row">
         <div className="card logout-form p-5 border-0 bg-light shadow">
           <p className="card-title text-center">Are you Sure. You wants to logout!</p>
           <div className="card-body d-flex flex-row gap-5 align-items-center justify-content-center">
-            <CancelButton buttonText={"Back"} />
+            <CancelButton buttonText={"Back"}/>
             <Button buttonText={"Yes"} onClick={handleLogout} />
           </div>
         </div>

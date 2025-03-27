@@ -1,6 +1,16 @@
+@import url("/src/App.min.css");
+
 :root {
-  --dark-bg-color: rgb(33 37 41);
+  --dark-bg-color: var(--dark-primary-baground-color);
+  --light-bg-color: var(--light-primary-baground-color);
+
+  --dark-active-btn-color: var(--dark-active-btn-color);
+  --light-active-btn-color: var(--light-active-btn-color);
+
+  --dark-btn-hover: var(--dark-primary-button-hover-color);
+  --light-btn-hover: var(--light-primary-button-hover-color);
 }
+
 .navbar {
   display: flex;
   align-items: center;
@@ -15,12 +25,12 @@
 }
 .unAuth-menu {
   display: flex;
-  gap: 15px;
+  gap: 10px;
 }
 .unAuth-menu .unAuth-menu-btn {
   text-decoration: none;
   color: white;
-  height: 30px;
+  height: 35px;
   width: 100px;
   display: flex;
   align-items: center;
@@ -30,15 +40,15 @@
   transition: 0.2s all ease-in-out;
 }
 .unAuth-menu-btn:hover:not(.active) {
-  background-color: rgba(167, 167, 167, 0.555);
+  background-color: var(--dark-btn-hover);
   letter-spacing: 1.5px;
 }
-.unAuth-menu-btn:active {
+/* .unAuth-menu-btn:active {
   background-color: white;
   color: black;
-}
+} */
 .unAuth-menu-btn.active {
-  background-color: #ffffff;
+  background-color: var(--dark-active-btn-color);
   color: black;
 }
 .auth-menu {
@@ -57,7 +67,7 @@
 }
 .auth-menu-item .auth-menu-btn {
   height: 30px;
-  width: 100px;
+  width: 125px;
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -107,7 +117,7 @@
   transition: all 1s ease-in-out !important;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .menu-items {
     display: flex;
     align-items: center;
@@ -119,7 +129,6 @@
   .unAuth-menu .unAuth-menu-btn {
     font-size: small;
     letter-spacing: 1px;
-    width: 80px;
   }
   .auth-menu {
     display: none;
@@ -135,7 +144,7 @@
     padding: 40px 20px;
     border-radius: 8px;
     gap: 10px;
-    width: 80svw;
+    width: 50svw;
     background-color: rgb(65, 65, 65);
     transition: all 1s ease-in-out;
   }
@@ -143,15 +152,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
     /* border: 2px solid red; */
     list-style: none;
   }
   .auth-menu-item .auth-menu-btn {
     border-radius: 8px;
     height: 40px;
-    width: 100%;
-    font-size: medium;
     color: rgb(225, 225, 225);
   }
   .auth-menu-item .auth-menu-btn.active {

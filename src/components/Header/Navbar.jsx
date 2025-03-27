@@ -3,17 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAccessToken } from "../../util/config/AxiosConfig";
 
-import AppSkeleton from "../../util/skeleton/AppSkeleton";
 import getFileIntoBase64 from "../../util/config/GetFileIntoBase64";
 import { Avatar, Box } from "@mui/material";
 import { appAuthMenu, appUnAuthMenu } from "../../util/constant/AppMenu";
 import { NavLink } from "react-router-dom";
+import AppSkeleton from "../../util/skeleton/AppSkeleton";
+import AppConstant from "../../util/constant/AppConstant";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userProfile, setUserProfile] = useState();
 
   const { TextSkeleton } = AppSkeleton();
+  const { AppButton, AppName } = AppConstant();
 
   let user = useSelector((state) => state.user);
 
@@ -83,23 +85,32 @@ const Navbar = () => {
           data-aos="fade"
           tabIndex="-1"
         >
-          <i className="fa-brands fa-shopify"></i>Shell.
+          {/* <i className="fa-brands fa-shopify"></i>Shell. */}
+          <AppName />
         </a>
         <div className="menu" data-aos="fade">
-          {isLoggedIn ? (
+          {!isLoggedIn ? (
             <div className="menu-items gap-4" ref={menuRef}>
               <div className={`auth-menu shadow-sm ${isOpen && "active"}`}>
                 <div className="auth-menu-items" data-aos="slide-left">
                   {appAuthMenu.map((menu, index) => {
                     return (
                       <li className="auth-menu-item" key={menu.id || index}>
-                        <NavLink
+                        <AppButton
+                          className={"auth-menu-btn fw-bold"}
+                          path={menu.url}
+                          icon={menu.icon}
+                          text={menu.title}
+                          onClick={() => handleHamburger()}
+                        >
+                        </AppButton>
+                        {/* <NavLink
                           className="auth-menu-btn fw-bold"
                           to={menu.url}
                           onClick={() => handleHamburger()}
                         >
                           {menu.title}
-                        </NavLink>
+                        </NavLink> */}
                       </li>
                     );
                   })}
@@ -168,13 +179,21 @@ const Navbar = () => {
             <div className="unAuth-menu">
               {appUnAuthMenu?.map((menu, index) => {
                 return (
-                  <NavLink
-                    className="unAuth-menu-btn fw-bold rounded-4"
-                    key={menu.id || index}
-                    to={menu.url}
-                  >
-                    {menu.title}
-                  </NavLink>
+                  <li key={menu.id}>
+                    <AppButton
+                      className={"unAuth-menu-btn fw-bold"}
+                      path={menu.url}
+                      icon={menu.icon}
+                      text={menu.title}
+                    ></AppButton>
+                  </li>
+                  // <NavLink
+                  //   className="unAuth-menu-btn fw-bold rounded-4"
+                  //   key={menu.id || index}
+                  //   to={menu.url}
+                  // >
+                  //   {menu.title}
+                  // </NavLink>
                 );
               })}
             </div>

@@ -16,11 +16,51 @@ const AppSkeleton = () => {
       return () => clearTimeout(timer);
     }, [delay]);
 
+    return <span>{isLoading ? <Skeleton /> : text}</span>;
+  };
+
+  const AppInputSkeleton = ({ count = 1 }) => {
     return (
-      <span>{isLoading ? <Skeleton /> : text}</span>
+      <Skeleton
+        width={`100%`}
+        height={40}
+        count={count}
+        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+      ></Skeleton>
     );
   };
 
-  return { TextSkeleton };
+  const AppButtonSkeleton = ({ count = 1 }) => {
+    return (
+      <Skeleton
+        width={`100%`}
+        height={35}
+        borderRadius={50}
+        count={count}
+        style={{ display: "flex", flexDirection: "column", gap: "5px" }}
+      ></Skeleton>
+    );
+  };
+
+  const AppTextSkeleton = ({ count = 1 }) => {
+    return (
+      <>
+        <Skeleton width={`100%`} height={15} count={count}></Skeleton>
+        <Skeleton width={`50%`} height={15}></Skeleton>
+      </>
+    );
+  };
+
+  const AppHeadingSkeleton = ({ count = 1, width = `50%` }) => {
+    return <Skeleton width={width} height={`100%`} count={count}></Skeleton>;
+  };
+
+  return {
+    TextSkeleton,
+    AppButtonSkeleton,
+    AppInputSkeleton,
+    AppTextSkeleton,
+    AppHeadingSkeleton,
+  };
 };
 export default AppSkeleton;

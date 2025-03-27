@@ -77,7 +77,7 @@ const Register = () => {
       .required("User Password is Required."),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("userPassword"), null], "Entered Password is Not Matched")
-      .required("Congirm the Enterd Password"),
+      .required("Confirm the enterd Password"),
   });
 
   const handleUserRegister = async (values, setSubmitting, setFieldError) => {
@@ -155,10 +155,10 @@ const Register = () => {
   };
 
   return (
-    <div className="container p-3" data-aos="fade">
+    <div className="p-3" data-aos="fade">
       <div className="row">
         <div className="card register-form border-0 bg-light shadow-sm rounded-4 p-5 d-flex flex-column gap-4">
-          <h4 className="card-title text-center">Sign up New User</h4>
+          <h2 className="card-title text-center">Sign up New User</h2>
           <div className="image-uploader d-felx flex-column align-items-center justify-content-center">
             <Box
               sx={{
@@ -337,7 +337,7 @@ const Register = () => {
                 buttonText="Sign Up"
                 isDisable={!formik.isValid}
               />
-              <CancelButton />
+              <CancelButton buttonText={"Back"}/>
             </div>
           </Box>
         </div>

@@ -4,3 +4,5 @@ export const APP_MUI_INPUT_FIELD_VARIENT = "filled";
 
 export const APP_MUI_INPUT_FIELD_SIZE = "small";
 // export const APP_MUI_INPUT_FIELD_SIZE = "medium";
+
+export const APP_MUI_BUTTON_VARIENT = "outlined"

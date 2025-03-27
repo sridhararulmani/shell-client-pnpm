@@ -23,11 +23,11 @@ import { useRef } from "react";
 const Login = () => {
   const navigate = useNavigate();
 
-  let user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
 
   const { startLoading, stopLoading } = useLoading();
 
-  const { CancelButton, SubmitButton } = AppConstant();
+  const { AppInputFeild, CancelButton, SubmitButton } = AppConstant();
 
   const [error, setError] = useState(null);
 
@@ -42,7 +42,9 @@ const Login = () => {
   const fetchAuthUser = async () => {
     const userRes = await loadUser();
     const userObj = authUserDetails(userRes);
-    dispatch(setUser(userObj));
+    if (!user?.userName) {
+      dispatch(setUser(userObj));
+    }
   };
 
   const initialValues = {
@@ -71,10 +73,8 @@ const Login = () => {
         const { accessToken, refreshToken } = response?.data;
         storeTokens(accessToken, refreshToken);
         await fetchAuthUser();
-        if (user) {
-          showSuccessToast("Sign In Success");
-          navigate("/");
-        }
+        showSuccessToast("Sign In Success");
+        navigate("/");
       } else {
         setError("Invalid Email or userPassword");
       }
@@ -106,7 +106,7 @@ const Login = () => {
 
   return (
     <div>
-      <div className="container p-3" data-aos="fade">
+      <div className="p-3" data-aos="fade">
         <div className="row">
           <div className="login-form border-0 card rounded-4 bg-light px-4 py-5 shadow-sm d-flex flex-column gap-4">
             <Box
@@ -123,7 +123,7 @@ const Login = () => {
                 width: "100%",
               }}
             >
-              <h4 className="card-title text-center">Sign in User</h4>
+              <h2 className="card-title text-center">Sign in User</h2>
               <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
                 {error && (
                   <span
