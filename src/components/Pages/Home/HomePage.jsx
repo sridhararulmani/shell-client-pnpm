@@ -36,7 +36,7 @@ const Home = () => {
           <h6 className="">Home h6</h6>
         </div>
         <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex">
-          <p>
+          <p className="text-red-50">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             deleniti tempore. Molestias cumque et accusamus exercitationem
             quibusdam voluptates ex eveniet debitis sit doloremque consequuntur

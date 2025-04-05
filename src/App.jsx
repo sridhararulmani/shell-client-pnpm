@@ -3,19 +3,21 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./App.min.css";
 
+import NavigationProvaider from "./util/context/NavigationContext.jsx";
+import React, { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SkeletonTheme } from "react-loading-skeleton";
+
 import PageTitile from "./util/config/GetPageTitile.jsx";
-import Navbar from "./components/Header/Navbar.jsx";
 import AppLoader from "./components/Pages/AppLoader/AppLoader.jsx";
 import AOSProvider from "./util/context/AOSScrollAnimationContext.jsx";
 
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { LoadingProvider } from "./util/context/LoadingContext.jsx";
 import { authUserDetails, loadUser } from "./util/config/AuthSetGet.jsx";
 import { useDispatch } from "react-redux";
 import { setUser } from "./util/redux/userSlice.jsx";
-import { SkeletonTheme } from "react-loading-skeleton";
 import {
   ABOUT_PAGE_URL,
   HOME_PAGE_URL,
@@ -24,8 +26,8 @@ import {
   SIGN_OUT_PAGE_URL,
   SIGN_UP_PAGE_URL,
 } from "./util/constant/AppUrlConstant.jsx";
-import NavigationProvaider from "./util/context/NavigationContext.jsx";
-import React, { Suspense } from "react";
+
+import Navbar from "./components/Header/Navbar.jsx";
 import HomePageSkeleton from "./components/Pages/Home/HomePageSkeleton.jsx";
 import LoginUserPageSkeleton from "./components/Pages/Forms/Login/LoginUserPageSkeleton.jsx";
 import ShopPageSkeleton from "./components/Pages/Shop/ShopPageSkeleton.jsx";
@@ -82,7 +84,7 @@ const App = () => {
                 <PageTitile />
                 <Navbar />
                 <AppLoader />
-                <section className="container-fluid">
+                <section className="container">
                   <Suspense fallback={<p>Loading...</p>}>
                     <Routes>
                       <Route

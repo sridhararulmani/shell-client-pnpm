@@ -51,6 +51,14 @@ const AppSkeleton = () => {
     );
   };
 
+  const AppTextSingleLineSkeleton = ({ count = 1 }) => {
+    return (
+      <>
+        <Skeleton width={`80%`} height={15} count={count}></Skeleton>
+      </>
+    );
+  };
+
   const AppHeadingSkeleton = ({ count = 1, width = `50%` }) => {
     return <Skeleton width={width} height={`100%`} count={count}></Skeleton>;
   };
@@ -60,6 +68,7 @@ const AppSkeleton = () => {
     AppButtonSkeleton,
     AppInputSkeleton,
     AppTextSkeleton,
+    AppTextSingleLineSkeleton,
     AppHeadingSkeleton,
   };
 };

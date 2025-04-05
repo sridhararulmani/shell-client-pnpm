@@ -20,6 +20,10 @@
   --dark-active-btn-color: #ffffff;
   --light-active-btn-color: black;
 
-  --dark-primary-button-hover-color: rgba(167, 167, 167, 0.555);
+  --dark-primary-button-hover-color: rgba(255, 255, 255, 0.137);
   --light-primary-button-hover-color: rgba(92, 92, 92, 0.555);
+
+  --dark-primary-button-click-color: rgba(255, 255, 255, 0.432);
+  --light-primary-button-click-color: rgba(0, 0, 0, 0.555);
+
 }

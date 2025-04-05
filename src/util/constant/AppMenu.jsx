@@ -24,7 +24,6 @@ export const appAuthMenu = [
   },
   { id: 2, title: "Shop", icon: <ShopIcon />, url: SHOP_PAGE_URL },
   { id: 3, title: "About", icon: <AboutIcon />, url: ABOUT_PAGE_URL },
-  { id: 4, title: "Sign Out", icon: <SignOutIcon />, url: SIGN_OUT_PAGE_URL },
 ];
 
 export const appUnAuthMenu = [
@@ -34,5 +33,10 @@ export const appUnAuthMenu = [
 
 export const profileMenu = [
   { id: 1, title: "Settings", icon: <Settings />, url: HOME_PAGE_URL },
-  { id: 3, title: "About", icon: <AboutIcon />, url: ABOUT_PAGE_URL },
+  { id: 2, title: "About", icon: <AboutIcon />, url: ABOUT_PAGE_URL },
+  { id: 3, title: "Sign Out", icon: <SignOutIcon />, url: SIGN_OUT_PAGE_URL },  
+];
+
+export const settingsMenu = [
+  { id: 1, title: "Sign Out", icon: <SignOutIcon />, url: SIGN_OUT_PAGE_URL },
 ];

@@ -1,11 +1,11 @@
-.loading-logo-div {
+.app-loading-logo-div {
   position: fixed;
   height: 100%;
   width: 100%;
   background-color: rgba(192, 192, 192, 0.288);
   z-index: 2;
 }
-.ring {
+.ring0 {
   position: absolute;
   display: flex;
   align-items: center;
@@ -16,7 +16,6 @@
 }
 .ring1 {
   position: absolute;
-  border-radius: 25%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +25,7 @@
 }
 .ring1 i {
   font-size: 2rem;
-  animation: bag-icon 10s infinite, bag-icon-height 3s infinite;
+  animation: bag-icon 10s infinite;
 }
 
 @keyframes ring {

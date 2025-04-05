@@ -27,7 +27,7 @@ const Login = () => {
 
   const { startLoading, stopLoading } = useLoading();
 
-  const { AppInputFeild, CancelButton, SubmitButton } = AppConstant();
+  const { CancelButton, SubmitButton, AppCardTitle } = AppConstant();
 
   const [error, setError] = useState(null);
 
@@ -108,7 +108,7 @@ const Login = () => {
     <div>
       <div className="p-3" data-aos="fade">
         <div className="row">
-          <div className="login-form border-0 card rounded-4 bg-light px-4 py-5 shadow-sm d-flex flex-column gap-4">
+          <div className="login-form border-0 card rounded-4 bg-light shadow-sm d-flex flex-column py-4">
             <Box
               component="form"
               onSubmit={(e) => {
@@ -119,11 +119,10 @@ const Login = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 3,
                 width: "100%",
               }}
             >
-              <h2 className="card-title text-center">Sign in User</h2>
+              <AppCardTitle text={"Sign In Account"} />
               <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
                 {error && (
                   <span
@@ -179,7 +178,7 @@ const Login = () => {
                     fullWidth
                   />
                 </div>
-                <div className="btn-grp d-flex flex-column gap-3 mt-3 align-items-center justify-content-center">
+                <div className="btn-grp d-flex flex-column gap-3 align-items-center justify-content-center">
                   <SubmitButton
                     buttonText={"Sign In"}
                     isDisable={!formik.isValid}
