@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <div className="p-3 d-flex flex-column gap-4" data-aos="fade">
       <div className="row gap-4">
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex border-0 app-bg-teritory app-text-primary">
           <h2 className="card-title">Home</h2>
 
           <h1 className="">Home h1</h1>
@@ -35,7 +35,7 @@ const Home = () => {
           <h5 className="">Home h5</h5>
           <h6 className="">Home h6</h6>
         </div>
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex border-0 app-bg-teritory">
           <p className="text-red-50">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta,
             deleniti tempore. Molestias cumque et accusamus exercitationem
@@ -45,7 +45,7 @@ const Home = () => {
             doloribus possimus deserunt. Enim quas eum corporis tempore.
           </p>
         </div>
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex border-0 app-bg-teritory">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
             assumenda tempora porro fugit quod molestiae eius temporibus vitae
@@ -61,7 +61,7 @@ const Home = () => {
             officiis eveniet quis minima!
           </p>
         </div>
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 d-flex border-0 app-bg-teritory">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
             assumenda tempora porro fugit quod molestiae eius temporibus vitae
@@ -95,14 +95,14 @@ const Home = () => {
         )}
       </div>
       <div className="row gap-4">
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 border-0 app-bg-teritory">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
             autem explicabo iure corporis at totam aliquid reiciendis cupiditate
             exercitationem illum voluptas soluta perspiciatis. Porro, fugiat?ஃ
           </p>
         </div>
-        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5">
+        <div className="col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 border-0 app-bg-teritory">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
             veniam natus, fugiat distinctio mollitia blanditiis ratione eaque

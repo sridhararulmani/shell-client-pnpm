@@ -34,6 +34,7 @@ import ShopPageSkeleton from "./components/Pages/Shop/ShopPageSkeleton.jsx";
 import AboutPageSkeleton from "./components/Pages/About/AboutPageSkeleton.jsx";
 import RegisterUserPageSkeleton from "./components/Pages/Forms/Register/RegisterUserPageSkeleton.jsx";
 import LogoutUserPageSkeleton from "./components/Pages/Forms/Logout/LogoutUserPageSkeleton.jsx";
+import ThemeProvider from "./util/context/ThemeContext.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -64,92 +65,94 @@ const App = () => {
   );
 
   return (
-    <div className="app">
-      <ToastContainer
-        draggable
-        position="top-right"
-        newestOnTop
-        limit={6}
-        progressStyle={locationbar}
-      />
-      <LoadingProvider>
-        <SkeletonTheme
-          borderRadius={10}
-          baseColor="#e0e0e0"
-          highlightColor="#f0f0f0"
-        >
-          <AOSProvider>
-            <Router>
-              <NavigationProvaider>
-                <PageTitile />
-                <Navbar />
-                <AppLoader />
-                <section className="container">
-                  <Suspense fallback={<p>Loading...</p>}>
-                    <Routes>
-                      <Route
-                        exact
-                        path={HOME_PAGE_URL}
-                        element={
-                          <Suspense fallback={<HomePageSkeleton />}>
-                            <Home />
-                          </Suspense>
-                        }
-                      />
-                      <Route
-                        exact
-                        path={SHOP_PAGE_URL}
-                        element={
-                          <Suspense fallback={<ShopPageSkeleton />}>
-                            <Shop />
-                          </Suspense>
-                        }
-                      ></Route>
-                      <Route
-                        exact
-                        path={ABOUT_PAGE_URL}
-                        element={
-                          <Suspense fallback={<AboutPageSkeleton />}>
-                            <About />
-                          </Suspense>
-                        }
-                      ></Route>
-                      <Route
-                        exact
-                        path={SIGN_IN_PAGE_URL}
-                        element={
-                          <Suspense fallback={<LoginUserPageSkeleton />}>
-                            <Login />
-                          </Suspense>
-                        }
-                      ></Route>
-                      <Route
-                        exact
-                        path={SIGN_OUT_PAGE_URL}
-                        element={
-                          <Suspense fallback={<LogoutUserPageSkeleton />}>
-                            <Logout />
-                          </Suspense>
-                        }
-                      ></Route>
-                      <Route
-                        exact
-                        path={SIGN_UP_PAGE_URL}
-                        element={
-                          <Suspense fallback={<RegisterUserPageSkeleton />}>
-                            <Register />
-                          </Suspense>
-                        }
-                      ></Route>
-                    </Routes>
-                  </Suspense>
-                </section>
-              </NavigationProvaider>
-            </Router>
-          </AOSProvider>
-        </SkeletonTheme>
-      </LoadingProvider>
-    </div>
+    <ThemeProvider>
+      <div className="app-body app-bg-primary">
+        <ToastContainer
+          draggable
+          position="top-right"
+          newestOnTop
+          limit={6}
+          progressStyle={locationbar}
+        />
+        <LoadingProvider>
+          <SkeletonTheme
+            borderRadius={10}
+            baseColor="#e0e0e0"
+            highlightColor="#f0f0f0"
+          >
+            <AOSProvider>
+              <Router>
+                <NavigationProvaider>
+                  <PageTitile />
+                  <Navbar />
+                  <AppLoader />
+                  <section className="container">
+                    <Suspense fallback={<p>Loading...</p>}>
+                      <Routes>
+                        <Route
+                          exact
+                          path={HOME_PAGE_URL}
+                          element={
+                            <Suspense fallback={<HomePageSkeleton />}>
+                              <Home />
+                            </Suspense>
+                          }
+                        />
+                        <Route
+                          exact
+                          path={SHOP_PAGE_URL}
+                          element={
+                            <Suspense fallback={<ShopPageSkeleton />}>
+                              <Shop />
+                            </Suspense>
+                          }
+                        ></Route>
+                        <Route
+                          exact
+                          path={ABOUT_PAGE_URL}
+                          element={
+                            <Suspense fallback={<AboutPageSkeleton />}>
+                              <About />
+                            </Suspense>
+                          }
+                        ></Route>
+                        <Route
+                          exact
+                          path={SIGN_IN_PAGE_URL}
+                          element={
+                            <Suspense fallback={<LoginUserPageSkeleton />}>
+                              <Login />
+                            </Suspense>
+                          }
+                        ></Route>
+                        <Route
+                          exact
+                          path={SIGN_OUT_PAGE_URL}
+                          element={
+                            <Suspense fallback={<LogoutUserPageSkeleton />}>
+                              <Logout />
+                            </Suspense>
+                          }
+                        ></Route>
+                        <Route
+                          exact
+                          path={SIGN_UP_PAGE_URL}
+                          element={
+                            <Suspense fallback={<RegisterUserPageSkeleton />}>
+                              <Register />
+                            </Suspense>
+                          }
+                        ></Route>
+                      </Routes>
+                    </Suspense>
+                  </section>
+                </NavigationProvaider>
+              </Router>
+            </AOSProvider>
+          </SkeletonTheme>
+        </LoadingProvider>
+      </div>
+    </ThemeProvider>
   );
 };
 

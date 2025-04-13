@@ -1,18 +1,33 @@
 :root {
-  --dark-primary-baground-color: rgb(33, 37, 41);
-  --light-primary-baground-color: rgb(236, 239, 243);
+  transition: background-color 0.3s ease, color 0.3s ease;
 
-  --dark-secondary-baground-color: rgb();
-  --light-secondary-baground-color: rgb();
+  --dark: rgb(30, 30, 30);
+  --dark-secondary:rgb(40, 40, 40);
+  --dark-teritory: rgb(100, 100, 100);
+  --dark-navbar-bg: rgba(33, 37, 41, 0.75);
 
-  --dark-primary-text-color: rgb(#ffffff);
-  --light-primary-text-color: rgb(black);
+  --light: rgba(250, 250, 250);
+  --light-secondary: rgba(300, 300, 300);
+  --light-teritory: rgba(350, 350, 350);
+  --light-navbar-bg: rgba(250, 250, 250, 0.75);
+
+  --dark-primary-baground-color: var(--dark);
+  --light-primary-baground-color: var(--light);
+
+  --dark-secondary-baground-color: var(--dark-secondary);
+  --light-secondary-baground-color: var(--light-secondary);
+
+  --dark-teritory-baground-color: var(--dark-teritory);
+  --light-teritory-baground-color: var(--light-teritory);
+
+  --dark-primary-text-color: #ffffff;
+  --light-primary-text-color: black;
 
   --dark-secondary-text-color: rgb();
   --light-secondary-text-color: rgb();
 
-  --dark-primary-button-color: rgb();
-  --light-primary-button-color: rgb();
+  --dark-primary-button-color: var(--light);
+  --light-primary-button-color: var(--dark);
 
   --dark-secondary-button-color: rgb();
   --light-secondary-button-color: rgb();
@@ -21,9 +36,51 @@
   --light-active-btn-color: black;
 
   --dark-primary-button-hover-color: rgba(255, 255, 255, 0.137);
-  --light-primary-button-hover-color: rgba(92, 92, 92, 0.555);
+  --light-primary-button-hover-color: rgba(255, 255, 255, 0.726);
 
-  --dark-primary-button-click-color: rgba(255, 255, 255, 0.432);
-  --light-primary-button-click-color: rgba(0, 0, 0, 0.555);
+  --dark-primary-button-click-color: rgba(255, 255, 255, 0.247);
+  --light-primary-button-click-color: rgba(221, 221, 221, 0.541);
 
+  --bg-nav-primary: var(--light-navbar-bg);
+  --bg-primary: var(--light-primary-baground-color);
+  --bg-secondary: var(--light-secondary);
+  --bg-teritory: var(--light-teritory);
+  --text-primary: var(--light-primary-text-color);
+  --button-primary: var(--light-primary-button-color);
+  --button-primary-text: var(--light-primary-text-color);
+  --button-active-bg-color: var(--light-primary-button-click-color);
+}
+
+[data-theme="light"] {
+  --bg-nav-primary: var(--dark-navbar-bg);
+  
+  --bg-primary: var(--dark-primary-baground-color);
+  --bg-secondary: var(--dark-secondary);
+  --bg-teritory: var(--dark-teritory);
+  
+  --text-primary: var(--dark-primary-text-color);
+  
+  --button-primary: var(--dark-primary-button-color);
+  --button-primary-text: var(--dark-primary-text-color);
+  --button-active-bg-color: var(--dark-primary-button-click-color);
+}
+
+.app-bg-primary {
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.app-bg-secondary {
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+}
+
+.app-bg-teritory {
+  background-color: var(--bg-teritory);
+  transition: background-color 0.3s ease;
+}
+
+.app-text-primary {
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }

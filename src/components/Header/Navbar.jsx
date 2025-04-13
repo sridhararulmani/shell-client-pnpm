@@ -1,4 +1,6 @@
 import "./Navbar.min.css";
+import "../../App.min.css";
+
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAccessToken } from "../../util/config/AxiosConfig";
@@ -8,16 +10,11 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Drawer,
-  IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  Popover,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -27,23 +24,22 @@ import {
   profileMenu,
   settingsMenu,
 } from "../../util/constant/AppMenu";
-import AppSkeleton from "../../util/skeleton/AppSkeleton";
 import AppConstant from "../../util/constant/AppConstant";
 import { MenuRounded } from "@mui/icons-material";
 import {
   AppMUIIconButton,
   AppMUIListItemButtonWithIcon,
   AppMUIPopover,
+  commonNavBarStyleColors,
 } from "../../util/mui/MUIUtils";
-import { Settings } from "@mui/icons-material";
 import { Person } from "@mui/icons-material";
 import { Email } from "@mui/icons-material";
+import { AppButtonData } from "../../util/constant/AppButtonData";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [userProfile, setUserProfile] = useState();
 
-  const { TextSkeleton } = AppSkeleton();
   const { AppButton, AppName, AppUserProfileAvatar } = AppConstant();
 
   let user = useSelector((state) => state.user);
@@ -55,10 +51,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const toggleRef = useRef(null);
-
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const profileMenuRef = useRef(null);
-  const profileToggleRef = useRef(null);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -79,14 +71,6 @@ const Navbar = () => {
     ) {
       setIsOpen(false);
     }
-    // if (
-    //   profileMenuRef.current &&
-    //   !profileMenuRef.current.contains(event.target) &&
-    //   profileToggleRef.current &&
-    //   !profileToggleRef.current.contains(event.target)
-    // ) {
-    //   setIsProfileOpen(false);
-    // }
   };
 
   const handleProfileMenuClose = () => {
@@ -95,10 +79,6 @@ const Navbar = () => {
 
   const handleHamburger = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleProfileMenu = () => {
-    setIsProfileOpen(!isProfileOpen);
   };
 
   useEffect(() => {
@@ -117,145 +97,17 @@ const Navbar = () => {
   }, []);
 
   return (
-    // <header
-    //   className="navbar navbar-expand-lg w-full navbar-dark bg-dark shadow-sm"
-    //   data-aos="slide-down"
-    // >
-    //   <div className="container mx-auto flex justify-between items-center">
-    //     <a
-    //       href="/"
-    //       className="navbar-brand fs-3 fw-bold"
-    //       data-aos="fade"
-    //       tabIndex="-1"
-    //     >
-    //       {/* <i className="fa-brands fa-shopify"></i>Shell. */}
-    //       <AppName />
-    //     </a>
-    //     <div className="menu" data-aos="fade">
-    //       {!isLoggedIn ? (
-    //         <div className="menu-items gap-4" ref={menuRef}>
-    //           <div className={`auth-menu shadow-sm ${isOpen && "active"}`}>
-    //             <div className="auth-menu-items" data-aos="slide-left">
-    //               {appAuthMenu.map((menu, index) => {
-    //                 return (
-    //                   <li className="auth-menu-item" key={menu.id || index}>
-    //                     <AppButton
-    //                       className={"auth-menu-btn fw-bold"}
-    //                       path={menu.url}
-    //                       icon={menu.icon}
-    //                       text={menu.title}
-    //                       onClick={() => handleHamburger()}
-    //                     ></AppButton>
-    //                     {/* <NavLink
-    //                       className="auth-menu-btn fw-bold"
-    //                       to={menu.url}
-    //                       onClick={() => handleHamburger()}
-    //                     >
-    //                       {menu.title}
-    //                     </NavLink> */}
-    //                   </li>
-    //                 );
-    //               })}
-    //             </div>
-    //           </div>
-    //           <div className="menu-details">
-    //             <div
-    //               className="hamburger-menu"
-    //               onClick={handleHamburger}
-    //               ref={toggleRef}
-    //             >
-    //               {!isOpen ? (
-    //                 <div className="open-icon">
-    //                   <span></span>
-    //                   <span></span>
-    //                   <span></span>
-    //                 </div>
-    //               ) : (
-    //                 <div className="close-icon">
-    //                   <span></span>
-    //                   <span></span>
-    //                 </div>
-    //               )}
-    //             </div>
-    //             <Box
-    //               // className="user-profile-image-container rounded-circle border border-light"
-    //               data-aos="flip-right"
-    //               data-aos-delay="900"
-    //               onClick={handleProfileMenu}
-    //               ref={profileToggleRef}
-    //               className="flex flex-row-reverse"
-    //             >
-    //               <span className="absolute flex size-2 z-1">
-    //                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-    //                 <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
-    //               </span>
-    //               <Avatar
-    //                 alt="User profile"
-    //                 src={userProfile}
-    //                 sx={{
-    //                   transition: "all 0.5s ease-in-out",
-    //                   cursor: "pointer",
-    //                 }}
-    //               ></Avatar>
-    //             </Box>
-    //             {isProfileOpen && (
-    //               <div
-    //                 className="profile-menu p-4 rounded shadow-sm"
-    //                 ref={profileMenuRef}
-    //               >
-    //                 <TextSkeleton
-    //                   className="text-wrap"
-    //                   text={user.userName}
-    //                   delay={500}
-    //                 />
-    //                 <hr />
-    //                 <TextSkeleton
-    //                   className="text-wrap"
-    //                   text={user.userEmail}
-    //                   delay={500}
-    //                 />
-    //                 <hr />
-    //                 <a href="" className="text-white">
-    //                   Settings
-    //                 </a>
-    //               </div>
-    //             )}
-    //           </div>
-    //         </div>
-    //       ) : (
-    //         <div className="unAuth-menu">
-    //           {appUnAuthMenu?.map((menu, index) => {
-    //             return (
-    //               <li key={menu.id}>
-    //                 <AppButton
-    //                   className={"unAuth-menu-btn fw-bold"}
-    //                   path={menu.url}
-    //                   icon={menu.icon}
-    //                   text={menu.title}
-    //                 ></AppButton>
-    //               </li>
-    //               // <NavLink
-    //               //   className="unAuth-menu-btn fw-bold rounded-4"
-    //               //   key={menu.id || index}
-    //               //   to={menu.url}
-    //               // >
-    //               //   {menu.title}
-    //               // </NavLink>
-    //             );
-    //           })}
-    //         </div>
-    //       )}
-    //     </div>
-    //   </div>
-    // </header>
     <AppBar
       position="sticky"
-      className="bg-dark shadow-sm"
+      className="shadow-sm"
       data-aos="slide-down"
       data-aos-ince="true"
+      sx={{
+        ...commonNavBarStyleColors,
+      }}
     >
       <Toolbar className="container flex justify-between item-center">
-        <Box>
+        <Box className="navbar-brand">
           <a href="/" className="navbar-brand" data-aos="fade" tabIndex="-1">
             <AppName />
           </a>
@@ -293,8 +145,6 @@ const Navbar = () => {
                   <Box
                     data-aos="flip-right"
                     data-aos-delay="900"
-                    // onClick={handleProfileMenu}
-                    // ref={profileToggleRef}
                     className="flex flex-row-reverse"
                   >
                     <span className="absolute flex size-2 z-1">
@@ -316,8 +166,22 @@ const Navbar = () => {
                     onCloseFn={handleClosePopover}
                     onClickFn={handleProfileMenuClose}
                     textList={[
-                      { id: 1, title: user.userName, icon: <Person /> },
-                      { id: 2, title: user.userEmail, icon: <Email /> },
+                      new AppButtonData(
+                        1,
+                        null,
+                        <Person />,
+                        user.userName || "User Name",
+                        null,
+                        null
+                      ),
+                      new AppButtonData(
+                        2,
+                        null,
+                        <Email />,
+                        user.userEmail || "User Email",
+                        null,
+                        null
+                      ),
                     ]}
                     buttonList={profileMenu}
                   />
@@ -330,7 +194,7 @@ const Navbar = () => {
               >
                 <AppMUIIconButton
                   clickFun={handleHamburger}
-                  icon={<MenuRounded className="text-white" />}
+                  icon={<MenuRounded />}
                 />
               </Box>
             </>
@@ -355,15 +219,20 @@ const Navbar = () => {
       </Toolbar>
       <Drawer
         className="block lg:hidden xl:hidden"
+        PaperProps={{
+          sx: {...commonNavBarStyleColors}
+        }}
         anchor="right"
         open={isOpen}
       >
         <Box
-          sx={{ position: "sticky", top: 0, zIndex: 1 }}
-          className="bg-white"
-          data-aos="slide-left"
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+          }}
         >
-          <ListItemButton>
+          <ListItemButton data-aos="slide-left">
             <ListItemText
               className="text-wrap"
               primary={
@@ -385,12 +254,7 @@ const Navbar = () => {
             />
           </ListItemButton>
         </Box>
-        <Box
-          data-aos="slide-left"
-          // onClick={handleProfileMenu}
-          // ref={profileToggleRef}
-          className="flex flex-col p-2"
-        >
+        <Box data-aos="slide-left" className="flex flex-col p-2">
           <List
             data-aos="slide-left"
             className="flex flex-col item-center justify-center"
@@ -411,8 +275,11 @@ const Navbar = () => {
           </List>
         </Box>
         <Box
-          sx={{ position: "sticky", bottom: 0, zIndex: 1 }}
-          className="bg-white"
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            zIndex: 1,
+          }}
         >
           <List>
             <AppMUIListItemButtonWithIcon buttonList={settingsMenu} />

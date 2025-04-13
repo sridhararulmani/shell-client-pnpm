@@ -1,4 +1,5 @@
 import "./AppConstant.min.css";
+import "../../App.min.css";
 
 import { useNavigationHistory } from "../context/NavigationContext";
 import { APP_MUI_BUTTON_VARIENT } from "./AppUtils";
@@ -31,7 +32,7 @@ const AppConstant = () => {
 
   const Button = ({
     buttonText = "Ok",
-    onClick,
+    onClick = () => {},
     icon,
     type = "button",
     className = "text-center rounded-5 px-3",
@@ -100,7 +101,7 @@ const AppConstant = () => {
     altText,
     dataAos = "flip-right",
     dataAosDelay = "300",
-    onClickFn,
+    onClickFn = () => {},
   }) => {
     return (
       <ListItemAvatar
@@ -135,9 +136,11 @@ const AppConstant = () => {
 
   const AppName = ({}) => {
     return (
-      <span className="text-base sm:text-lg md:text-2xl lg:text-2xl font-bold gap-2">
+      <span className="sm:text-lg md:text-2xl lg:text-2xl font-bold gap-2">
         <i className="fa-brands fa-shopify"></i>
-        <span>Shell</span>
+        <span>
+          Shell
+        </span>
       </span>
     );
   };

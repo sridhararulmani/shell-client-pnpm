@@ -8,17 +8,12 @@ import {
 } from "@mui/material";
 import AppSkeleton from "../skeleton/AppSkeleton";
 import { NavLink } from "react-router-dom";
+import "../../App.min.css";
 
-export const AppMUIIconButton = ({ icon, clickFun, eleRef }) => {
+export const AppMUIIconButton = ({ icon, clickFun = () => {}, eleRef }) => {
   const appIconStyle = {
+    color: "var(--text-primary)",
     backgroundColor: "transparent",
-    "&:hover:not(&:active)": {
-      backgroundColor: "var(--dark-primary-button-hover-color)",
-    },
-    "&:active": {
-      backgroundColor: "var(--dark-primary-button-click-color)",
-      color: "var(--dark-active-btn-color)",
-    },
     transition: "all 0.2s ease-in-out",
   };
 
@@ -43,16 +38,33 @@ export const muiStylesListItem = {
 export const muiButtonStyle = {
   display: "flex",
   flexDirection: "row",
-  width: "120px",
+  paddingX: "15px",
+  minWidth: "150px",
+  maxWidth: "200px",
 };
 
 export const muiFontStyle = {
   fontSize: "0.8rem",
   textTransform: "none",
-  color: "black",
+  whiteSpace: "nowrap",
+  color: "var(--text-primary)",
 };
 
-export const AppMUIListItemTextWithIcon = ({ textDataList ,dataAos="slide-left"}) => {
+  export const commonNavBarStyleColors = {
+    backgroundColor: "var(--bg-nav-primary)",
+    color: "var(--text-primary)",
+    backdropFilter: "blur(5px)",
+    WebkitBackdropFilter: "blur(5px)",
+  };
+
+export const popoverButtonTextAlign = {
+  justifyContent: "flex-start",
+};
+
+export const AppMUIListItemTextWithIcon = ({
+  textDataList,
+  dataAos = "slide-left",
+}) => {
   const { AppTextSingleLineSkeleton } = AppSkeleton();
 
   return (
@@ -63,13 +75,15 @@ export const AppMUIListItemTextWithIcon = ({ textDataList ,dataAos="slide-left"}
             key={index}
             LinkComponent={ListItemText}
             sx={{
+              pointerEvents: "none",
               ...muiButtonStyle,
               ...muiFontStyle,
+              ...popoverButtonTextAlign,
             }}
             fullWidth
             startIcon={data.icon}
           >
-            {data.title || <AppTextSingleLineSkeleton />}
+            {data.text || <AppTextSingleLineSkeleton />}
           </Button>
         );
       })}
@@ -77,7 +91,10 @@ export const AppMUIListItemTextWithIcon = ({ textDataList ,dataAos="slide-left"}
   );
 };
 
-export const AppMUIListItemButtonWithIcon = ({ buttonList , dataAos="slide-left"}) => {
+export const AppMUIListItemButtonWithIcon = ({
+  buttonList,
+  dataAos = "slide-left",
+}) => {
   const { AppTextSingleLineSkeleton } = AppSkeleton();
 
   return (
@@ -90,12 +107,13 @@ export const AppMUIListItemButtonWithIcon = ({ buttonList , dataAos="slide-left"
             sx={{
               ...muiButtonStyle,
               ...muiFontStyle,
+              ...popoverButtonTextAlign,
             }}
-            to={data.url}
+            to={data.path}
             fullWidth
             startIcon={data.icon}
           >
-            {data.title}
+            {data.text || <AppTextSingleLineSkeleton />}
           </Button>
         );
       })}
@@ -105,10 +123,10 @@ export const AppMUIListItemButtonWithIcon = ({ buttonList , dataAos="slide-left"
 
 export const AppMUIPopover = ({
   anchorEl,
-  onCloseFn,
-  onClickFn,
+  onCloseFn = () => {},
+  onClickFn = () => {},
   horizontalPosition = "center",
-  anchorOrigin = { vertival: "bottum", horizontal: horizontalPosition },
+  anchorOrigin = { vertical: "bottom", horizontal: horizontalPosition },
   transferOrigin = { vertical: "top", horizontal: horizontalPosition },
   popoverHeaderList,
   popoverFooterList,
@@ -119,15 +137,27 @@ export const AppMUIPopover = ({
 
   return (
     <Popover
+      disableEnforceFocus
       open={Boolean(anchorEl)}
       anchorEl={anchorEl}
       onClick={() => onClickFn()}
       onClose={() => onCloseFn()}
       anchorOrigin={anchorOrigin}
       transformOrigin={transferOrigin}
-      sx={{marginTop:"50px"}}
+      sx={{ marginTop: "15px" }}
+      PaperProps={{
+        sx: {
+          ...commonNavBarStyleColors
+        },
+      }}
     >
-      <Box data-aos="slide-left" data-aos-delay="100">
+      <Box
+        sx={{
+          backgroundColor:"transparent",
+          backdropFilter: "blur(15px)",
+          WebkitBackdropFilter: "blur(15px)",
+        }}
+      >
         {popoverHeaderList && (
           <Box>
             <AppMUIListItemTextWithIcon textDataList={popoverHeaderList} />

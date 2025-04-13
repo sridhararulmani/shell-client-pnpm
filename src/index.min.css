@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
-html, body {
+html,
+body {
   height: -webkit-fill-available;
+}
+
+.app-body {
+  min-height: 100dvh;
 }
 
 html {
