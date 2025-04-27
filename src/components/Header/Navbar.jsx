@@ -8,7 +8,6 @@ import { getAccessToken } from "../../util/config/AxiosConfig";
 import getFileIntoBase64 from "../../util/config/GetFileIntoBase64";
 import {
   AppBar,
-  Avatar,
   Box,
   Drawer,
   List,
@@ -31,10 +30,9 @@ import {
   AppMUIListItemButtonWithIcon,
   AppMUIPopover,
   commonNavBarStyleColors,
+  commonNavBarWithoutBlurStyleColors,
 } from "../../util/mui/MUIUtils";
-import { Person } from "@mui/icons-material";
-import { Email } from "@mui/icons-material";
-import { AppButtonData } from "../../util/constant/AppButtonData";
+import { useCallback } from "react";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState();
@@ -54,15 +52,15 @@ const Navbar = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handlePopoverCick = (event) => {
+  const handlePopoverCick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleClosePopover = () => {
+  const handleClosePopover = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleClickingOutside = (event) => {
+  const handleClickingOutside = useCallback((event) => {
     if (
       menuRef.current &&
       !menuRef.current.contains(event.target) &&
@@ -71,15 +69,15 @@ const Navbar = () => {
     ) {
       setIsOpen(false);
     }
-  };
+  }, []);
 
-  const handleProfileMenuClose = () => {
+  const handleProfileMenuClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleHamburger = () => {
+  const handleHamburger = useCallback(() => {
     setIsOpen(!isOpen);
-  };
+  }, []);
 
   useEffect(() => {
     setUserProfile(() =>
@@ -101,19 +99,25 @@ const Navbar = () => {
       position="sticky"
       className="shadow-sm"
       data-aos="slide-down"
-      data-aos-ince="true"
+      data-aos-once="true"
       sx={{
         ...commonNavBarStyleColors,
       }}
     >
       <Toolbar className="container flex justify-between item-center">
         <Box className="navbar-brand">
-          <a href="/" className="navbar-brand" data-aos="fade" tabIndex="-1">
+          <a
+            href="/"
+            className="navbar-brand"
+            data-aos="fade"
+            data-aos-once="true"
+            tabIndex="-1"
+          >
             <AppName />
           </a>
         </Box>
         {/* Menu */}
-        <Box className="flex gap-3">
+        <Box className="flex gap-2">
           {isLoggedIn ? (
             <>
               <Box className="hidden lg:block xl:block menu" data-aos="fade">
@@ -121,6 +125,8 @@ const Navbar = () => {
                   <div className={`auth-menu shadow-sm ${isOpen && "active"}`}>
                     <div
                       className="auth-menu-items gap-1"
+                      data-aos-delay="100"
+                      data-aos-once="true"
                       data-aos="slide-left"
                     >
                       {appAuthMenu.map((menu, index) => {
@@ -142,48 +148,19 @@ const Navbar = () => {
               </Box>
               <Box className="flex item-center justify-center">
                 <div className={`menu-details ${isOpen && "d-none"}`}>
-                  <Box
-                    data-aos="flip-right"
-                    data-aos-delay="900"
-                    className="flex flex-row-reverse"
-                  >
-                    <span className="absolute flex size-2 z-1">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                      <span className="relative inline-flex size-2 rounded-full bg-sky-500"></span>
-                    </span>
-                    <Avatar
-                      alt={user.userName}
-                      src={userProfile}
-                      onClick={handlePopoverCick}
-                      sx={{
-                        transition: "all 0.5s ease-in-out",
-                        cursor: "pointer",
-                      }}
-                    ></Avatar>
-                  </Box>
+                  <AppUserProfileAvatar
+                    userProfile={userProfile}
+                    altText={user.userName}
+                    onClickFn={handlePopoverCick}
+                    dataAosDelay="900"
+                    dataAosOnce="true"
+                    dataAos={"flip-right"}
+                  />
                   <AppMUIPopover
                     anchorEl={anchorEl}
                     onCloseFn={handleClosePopover}
                     onClickFn={handleProfileMenuClose}
-                    textList={[
-                      new AppButtonData(
-                        1,
-                        null,
-                        <Person />,
-                        user.userName || "User Name",
-                        null,
-                        null
-                      ),
-                      new AppButtonData(
-                        2,
-                        null,
-                        <Email />,
-                        user.userEmail || "User Email",
-                        null,
-                        null
-                      ),
-                    ]}
-                    buttonList={profileMenu}
+                    buttonList={{ content: profileMenu }}
                   />
                 </div>
               </Box>
@@ -200,11 +177,12 @@ const Navbar = () => {
             </>
           ) : (
             <Box>
-              <div className="flex">
+              <div className="flex gap-1">
                 {appUnAuthMenu?.map((menu, index) => {
                   return (
-                    <li key={menu.id || index}>
+                    <li key={menu.id || index} className="unAuth-menu">
                       <AppButton
+                        className="unAuth-menu-btn"
                         path={menu.url}
                         icon={menu.icon}
                         text={menu.title}
@@ -220,7 +198,7 @@ const Navbar = () => {
       <Drawer
         className="block lg:hidden xl:hidden"
         PaperProps={{
-          sx: {...commonNavBarStyleColors}
+          sx: { ...commonNavBarWithoutBlurStyleColors },
         }}
         anchor="right"
         open={isOpen}

@@ -10,7 +10,7 @@ const RegisterUserPageSkeleton = () => {
   return (
     <div className="skeleton-card p-3">
       <div className="row">
-        <div className="card register-form border-0 bg-light shadow-sm rounded-4 p-5 d-flex flex-column gap-4">
+        <div className="register-form border-0 card rounded-4 px-4 py-5 shadow d-flex flex-column gap-4">
           <h4 className="card-title text-center">
             <Skeleton width={`50%`} height={`100%`}></Skeleton>
           </h4>

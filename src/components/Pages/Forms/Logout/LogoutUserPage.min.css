@@ -1,8 +1,0 @@
-.logout-form{
-    width: 50%;
-}
-@media (max-width:800px) {
-    .logout-form{
-        width: 100%;
-    }
-}

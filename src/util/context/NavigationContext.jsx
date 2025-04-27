@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { HOME_PAGE_URL } from "../constant/AppUrlConstant";
+import { useCallback } from "react";
 
 const NavigationContext = createContext();
 
@@ -14,7 +15,7 @@ const NavigationProvaider = ({ children }) => {
     setHistory((prev) => (prev.includes(path) ? prev : [...prev, path]));
   };
 
-  const navPrevPath = () => {
+  const navPrevPath = useCallback(() => {
     setHistory((prev) => {
       if (prev.length > 1) {
         const newHistory = [...prev];
@@ -31,7 +32,7 @@ const NavigationProvaider = ({ children }) => {
       }
       return prev;
     });
-  };
+  }, []);
 
   return (
     <NavigationContext.Provider value={{ pushPath, navPrevPath }}>

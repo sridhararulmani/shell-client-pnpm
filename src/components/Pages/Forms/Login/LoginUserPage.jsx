@@ -19,6 +19,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRef } from "react";
+import { appCardStyles, themeBasedStyleForMuiInputs } from "../../../../util/mui/MUIUtils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ const Login = () => {
     <div>
       <div className="p-3" data-aos="fade">
         <div className="row">
-          <div className="login-form border-0 card rounded-4 bg-light shadow-sm d-flex flex-column py-4">
+          <div className={`card login-form ${appCardStyles}`}>
             <Box
               component="form"
               onSubmit={(e) => {
@@ -148,6 +149,9 @@ const Login = () => {
                     helperText={
                       formik.touched.userName && formik.errors.userName
                     }
+                    sx={{
+                      ...themeBasedStyleForMuiInputs,
+                    }}
                     inputRef={feileRef.userName}
                     // value={userCridentials.userName}
                     // onChange={handleChange}

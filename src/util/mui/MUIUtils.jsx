@@ -1,32 +1,58 @@
+import "../../App.min.css";
+import React from "react";
+
 import {
   Box,
   Button,
+  Divider,
   IconButton,
   ListItem,
   ListItemText,
   Popover,
 } from "@mui/material";
-import AppSkeleton from "../skeleton/AppSkeleton";
 import { NavLink } from "react-router-dom";
-import "../../App.min.css";
 
-export const AppMUIIconButton = ({ icon, clickFun = () => {}, eleRef }) => {
-  const appIconStyle = {
+import AppSkeleton from "../skeleton/AppSkeleton";
+
+export const AppMUIIconButton = React.memo(
+  ({ icon, clickFun = () => {}, eleRef }) => {
+    return (
+      <IconButton
+        LinkComponent={Button}
+        onClick={clickFun}
+        ref={eleRef}
+        sx={{ ...appIconStyle }}
+      >
+        {icon}
+      </IconButton>
+    );
+  }
+);
+
+export const appIconStyle = {
+  color: "var(--text-primary)",
+  backgroundColor: "transparent",
+  transition: "all 0.2s ease-in-out",
+};
+
+export const themeBasedStyleForMuiInputs = {
+  "& .MuiOutlinedInput-root": {
     color: "var(--text-primary)",
-    backgroundColor: "transparent",
-    transition: "all 0.2s ease-in-out",
-  };
-
-  return (
-    <IconButton
-      LinkComponent={Button}
-      onClick={() => clickFun()}
-      ref={eleRef}
-      sx={appIconStyle}
-    >
-      {icon}
-    </IconButton>
-  );
+    backgroundColor: "var(--bg-secondary)",
+    borderColor: "black",
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "black",
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "black",
+  },
+  "& .MuiInputLabel-root": {
+    color: "var(--text-primary)",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "var(--text-primary)",
+  },
 };
 
 export const muiStylesListItem = {
@@ -48,137 +74,179 @@ export const muiFontStyle = {
   textTransform: "none",
   whiteSpace: "nowrap",
   color: "var(--text-primary)",
+  letterSpacing: "0.5px",
+  transition: "letter-spacing 0.2s ease-in-out",
 };
 
-  export const commonNavBarStyleColors = {
-    backgroundColor: "var(--bg-nav-primary)",
-    color: "var(--text-primary)",
-    backdropFilter: "blur(5px)",
-    WebkitBackdropFilter: "blur(5px)",
-  };
+export const appCard =
+  "col-sm-12 col-md-8 col-lg-5 card p-4 p-md-4 p-lg-5 border-0";
+
+export const appCardStyles =
+  "border-0 rounded-4 shadow-sm d-flex flex-column py-4";
+
+export const commonNavBarStyleColors = {
+  backgroundColor: "var(--bg-nav-primary)",
+  color: "var(--text-primary)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+};
+
+export const commonNavBarWithoutBlurStyleColors = {
+  backgroundColor: "var(--bg-primary)",
+  color: "var(--text-primary)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+};
 
 export const popoverButtonTextAlign = {
   justifyContent: "flex-start",
 };
 
-export const AppMUIListItemTextWithIcon = ({
-  textDataList,
-  dataAos = "slide-left",
-}) => {
-  const { AppTextSingleLineSkeleton } = AppSkeleton();
+export const AppMUIListItemTextWithIcon = React.memo(
+  ({ textDataList, dataAos = "slide-left" }) => {
+    const { AppTextSingleLineSkeleton } = AppSkeleton();
 
+    return (
+      <ListItem sx={muiStylesListItem} data-aos={dataAos}>
+        {textDataList?.map((data, index) => {
+          return (
+            <Button
+              key={index}
+              LinkComponent={ListItemText}
+              sx={{
+                pointerEvents: "none",
+                ...muiButtonStyle,
+                ...muiFontStyle,
+                ...popoverButtonTextAlign,
+              }}
+              fullWidth
+              startIcon={data.icon}
+            >
+              {data.text || <AppTextSingleLineSkeleton />}
+            </Button>
+          );
+        })}
+      </ListItem>
+    );
+  }
+);
+
+export const AppMUIListItemButtonWithIcon = React.memo(
+  ({ buttonList, dataAos = "slide-left" }) => {
+    const { AppTextSingleLineSkeleton } = AppSkeleton();
+
+    return (
+      <ListItem sx={muiStylesListItem} data-aos={dataAos}>
+        {buttonList?.map((data, index) => {
+          return (
+            <Button
+              key={index}
+              LinkComponent={NavLink}
+              sx={{
+                ...muiButtonStyle,
+                ...muiFontStyle,
+                ...popoverButtonTextAlign,
+                borderRadius: 0,
+              }}
+              to={data.path}
+              fullWidth
+              startIcon={data.icon}
+            >
+              {data.text || <AppTextSingleLineSkeleton />}
+            </Button>
+          );
+        })}
+      </ListItem>
+    );
+  }
+);
+
+export const AppMUIDivider = React.memo(({}) => {
   return (
-    <ListItem sx={muiStylesListItem} data-aos={dataAos}>
-      {textDataList?.map((data, index) => {
-        return (
-          <Button
-            key={index}
-            LinkComponent={ListItemText}
-            sx={{
-              pointerEvents: "none",
-              ...muiButtonStyle,
-              ...muiFontStyle,
-              ...popoverButtonTextAlign,
-            }}
-            fullWidth
-            startIcon={data.icon}
-          >
-            {data.text || <AppTextSingleLineSkeleton />}
-          </Button>
-        );
-      })}
-    </ListItem>
+    <Divider
+      orientation="horizontal"
+      variant="middle"
+      flexItem
+      sx={{ borderColor: "var(--text-secondary)" }}
+    />
   );
-};
+});
 
-export const AppMUIListItemButtonWithIcon = ({
-  buttonList,
-  dataAos = "slide-left",
-}) => {
-  const { AppTextSingleLineSkeleton } = AppSkeleton();
+export const AppMUIDilog = React.memo(({}) => {
+  return null;
+});
 
-  return (
-    <ListItem sx={muiStylesListItem} data-aos={dataAos}>
-      {buttonList?.map((data, index) => {
-        return (
-          <Button
-            key={index}
-            LinkComponent={NavLink}
-            sx={{
-              ...muiButtonStyle,
-              ...muiFontStyle,
-              ...popoverButtonTextAlign,
-            }}
-            to={data.path}
-            fullWidth
-            startIcon={data.icon}
-          >
-            {data.text || <AppTextSingleLineSkeleton />}
-          </Button>
-        );
-      })}
-    </ListItem>
-  );
-};
+export const AppMUIPopover = React.memo(
+  ({
+    anchorEl,
+    onCloseFn = () => {},
+    onClickFn = () => {},
+    horizontalPosition = "center",
+    anchorOrigin = { vertical: "bottom", horizontal: horizontalPosition },
+    transferOrigin = { vertical: "top", horizontal: horizontalPosition },
+    popoverHeaderList,
+    popoverFooterList,
+    textList,
+    buttonList,
+  }) => {
+    const { AppTextSingleLineSkeleton } = AppSkeleton();
 
-export const AppMUIPopover = ({
-  anchorEl,
-  onCloseFn = () => {},
-  onClickFn = () => {},
-  horizontalPosition = "center",
-  anchorOrigin = { vertical: "bottom", horizontal: horizontalPosition },
-  transferOrigin = { vertical: "top", horizontal: horizontalPosition },
-  popoverHeaderList,
-  popoverFooterList,
-  textList,
-  buttonList,
-}) => {
-  const { AppTextSingleLineSkeleton } = AppSkeleton();
-
-  return (
-    <Popover
-      disableEnforceFocus
-      open={Boolean(anchorEl)}
-      anchorEl={anchorEl}
-      onClick={() => onClickFn()}
-      onClose={() => onCloseFn()}
-      anchorOrigin={anchorOrigin}
-      transformOrigin={transferOrigin}
-      sx={{ marginTop: "15px" }}
-      PaperProps={{
-        sx: {
-          ...commonNavBarStyleColors
-        },
-      }}
-    >
-      <Box
-        sx={{
-          backgroundColor:"transparent",
-          backdropFilter: "blur(15px)",
-          WebkitBackdropFilter: "blur(15px)",
+    return (
+      <Popover
+        disableEnforceFocus
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClick={onClickFn}
+        onClose={onCloseFn}
+        anchorOrigin={anchorOrigin}
+        transformOrigin={transferOrigin}
+        sx={{ marginTop: "15px" }}
+        PaperProps={{
+          sx: {
+            ...commonNavBarStyleColors,
+            paddingY: "0.6rem",
+          },
         }}
       >
-        {popoverHeaderList && (
-          <Box>
-            <AppMUIListItemTextWithIcon textDataList={popoverHeaderList} />
-          </Box>
-        )}
-        {textList && (
-          <Box>
-            <AppMUIListItemTextWithIcon textDataList={textList} />
-          </Box>
-        )}
-        {buttonList && (
-          <Box>
-            <AppMUIListItemButtonWithIcon buttonList={buttonList} />
-          </Box>
-        )}
-        {popoverFooterList && (
-          <Box>
-            <AppMUIListItemTextWithIcon textDataList={popoverFooterList} />
-          </Box>
-        )}
-      </Box>
-    </Popover>
-  );
-};
+        <Box
+          sx={{
+            backgroundColor: "transparent",
+          }}
+        >
+          {popoverHeaderList && (
+            <Box>
+              {popoverHeaderList?.topBorder && <AppMUIDivider />}
+              <AppMUIListItemTextWithIcon
+                textDataList={popoverHeaderList?.content}
+              />
+              {popoverHeaderList?.botumBorder && <AppMUIDivider />}
+            </Box>
+          )}
+          {textList && (
+            <Box>
+              {textList.topBorder && <AppMUIDivider />}
+              <AppMUIListItemTextWithIcon textDataList={textList?.content} />
+              {textList.botumBorder && <AppMUIDivider />}
+            </Box>
+          )}
+          {buttonList && (
+            <Box>
+              {buttonList.topBorder && <AppMUIDivider />}
+              <AppMUIListItemButtonWithIcon buttonList={buttonList?.content} />
+              {buttonList.botumBorder && <AppMUIDivider />}
+            </Box>
+          )}
+          {popoverFooterList && (
+            <Box>
+              {popoverFooterList.topBorder && <AppMUIDivider />}
+              <AppMUIListItemTextWithIcon
+                textDataList={popoverFooterList?.content}
+              />
+              {popoverFooterList.botumBorder && <AppMUIDivider />}
+            </Box>
+          )}
+        </Box>
+      </Popover>
+    );
+  }
+);

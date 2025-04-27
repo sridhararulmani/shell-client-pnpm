@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
@@ -6,7 +7,7 @@ import { useSelector } from "react-redux";
 const AppSkeleton = () => {
   let user = useSelector((state) => state.user);
 
-  const TextSkeleton = ({ text, delay = 1500 }) => {
+  const TextSkeleton = useCallback(({ text, delay = 1500 }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -17,9 +18,9 @@ const AppSkeleton = () => {
     }, [delay]);
 
     return <span>{isLoading ? <Skeleton /> : text}</span>;
-  };
+  }, []);
 
-  const AppInputSkeleton = ({ count = 1 }) => {
+  const AppInputSkeleton = useCallback(({ count = 1 }) => {
     return (
       <Skeleton
         width={`100%`}
@@ -28,9 +29,9 @@ const AppSkeleton = () => {
         style={{ display: "flex", flexDirection: "column", gap: "10px" }}
       ></Skeleton>
     );
-  };
+  }, []);
 
-  const AppButtonSkeleton = ({ count = 1 }) => {
+  const AppButtonSkeleton = useCallback(({ count = 1 }) => {
     return (
       <Skeleton
         width={`100%`}
@@ -40,28 +41,28 @@ const AppSkeleton = () => {
         style={{ display: "flex", flexDirection: "column", gap: "5px" }}
       ></Skeleton>
     );
-  };
+  }, []);
 
-  const AppTextSkeleton = ({ count = 1 }) => {
+  const AppTextSkeleton = useCallback(({ count = 1 }) => {
     return (
       <>
         <Skeleton width={`100%`} height={15} count={count}></Skeleton>
         <Skeleton width={`50%`} height={15}></Skeleton>
       </>
     );
-  };
+  }, []);
 
-  const AppTextSingleLineSkeleton = ({ count = 1 }) => {
+  const AppTextSingleLineSkeleton = useCallback(({ count = 1 }) => {
     return (
       <>
         <Skeleton width={`80%`} height={15} count={count}></Skeleton>
       </>
     );
-  };
+  }, []);
 
-  const AppHeadingSkeleton = ({ count = 1, width = `50%` }) => {
+  const AppHeadingSkeleton = useCallback(({ count = 1, width = `50%` }) => {
     return <Skeleton width={width} height={`100%`} count={count}></Skeleton>;
-  };
+  }, []);
 
   return {
     TextSkeleton,

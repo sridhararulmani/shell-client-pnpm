@@ -1,18 +1,30 @@
 import React from "react";
-import Skeleton from "react-loading-skeleton";
+import { appCard } from "../../../util/mui/MUIUtils";
+import AppSkeleton from "../../../util/skeleton/AppSkeleton";
 
 const ShopPageSkeleton = () => {
+  const { AppTextSkeleton, AppHeadingSkeleton } = AppSkeleton();
+
   return (
-    <div className="skeleton-card p-3">
-      <h1>
-        <Skeleton width={`50%`} height={`100%`}></Skeleton>
-      </h1>
-      <p>
-        <Skeleton width={`80%`} height={`100%`}></Skeleton>
-        <Skeleton width={`80%`} height={`100%`}></Skeleton>
-        <Skeleton width={`80%`} height={`100%`}></Skeleton>
-        <Skeleton width={`40%`} height={`100%`}></Skeleton>
-      </p>
+    <div className="p-3 flex flex-column gap-4">
+      <div className="row gap-4">
+        <div className={"skeleton-card card p-3" + `${appCard}`}>
+          <h1>
+            <AppHeadingSkeleton />
+          </h1>
+          <p>
+            <AppTextSkeleton count={5} />
+          </p>
+        </div>
+        <div className={"skeleton-card card p-3" + `${appCard}`}>
+          <h1>
+            <AppHeadingSkeleton />
+          </h1>
+          <p>
+            <AppTextSkeleton count={5} />
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

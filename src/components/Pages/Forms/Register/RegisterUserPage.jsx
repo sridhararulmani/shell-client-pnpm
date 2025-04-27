@@ -14,6 +14,7 @@ import {
 } from "../../../../util/constant/AppUtils";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { appCardStyles, themeBasedStyleForMuiInputs } from "../../../../util/mui/MUIUtils";
 
 const Register = () => {
   const { startLoading, stopLoading } = useLoading();
@@ -157,9 +158,8 @@ const Register = () => {
   return (
     <div className="p-3" data-aos="fade">
       <div className="row">
-        <div className="card register-form border-0 bg-light shadow-sm rounded-4 gap-4 py-4 d-flex flex-column gap-4">
+        <div className={`card register-form ${appCardStyles}`}>
           <AppCardTitle text={"Sign up New User"} />
-          {/* <h2 className="card-title text-center">Sign up New User</h2> */}
           <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
             <div className="image-uploader d-felx flex-column align-items-center justify-content-center">
               <Box
@@ -251,6 +251,9 @@ const Register = () => {
                 variant={APP_MUI_INPUT_FIELD_VARIENT}
                 type="text"
                 name="userName"
+                sx={{
+                  ...themeBasedStyleForMuiInputs,
+                }}
                 value={formik.values.userName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -275,6 +278,9 @@ const Register = () => {
                   formik.touched.mobileNumber &&
                   Boolean(formik.errors.mobileNumber)
                 }
+                sx={{
+                  ...themeBasedStyleForMuiInputs,
+                }}
                 helperText={
                   formik.touched.mobileNumber && formik.errors.mobileNumber
                 }
@@ -293,6 +299,9 @@ const Register = () => {
                 error={
                   formik.touched.userEmail && Boolean(formik.errors.userEmail)
                 }
+                sx={{
+                  ...themeBasedStyleForMuiInputs,
+                }}
                 helperText={formik.touched.userEmail && formik.errors.userEmail}
                 inputRef={feileRef.userEmail}
                 size={APP_MUI_INPUT_FIELD_SIZE}
@@ -313,6 +322,9 @@ const Register = () => {
                 helperText={
                   formik.touched.userPassword && formik.errors.userPassword
                 }
+                sx={{
+                  ...themeBasedStyleForMuiInputs,
+                }}
                 inputRef={feileRef.userPassword}
                 size={APP_MUI_INPUT_FIELD_SIZE}
                 fullWidth
@@ -332,6 +344,9 @@ const Register = () => {
                   formik.touched.confirmPassword &&
                   formik.errors.confirmPassword
                 }
+                sx={{
+                  ...themeBasedStyleForMuiInputs,
+                }}
                 inputRef={feileRef.confirmPassword}
                 size={APP_MUI_INPUT_FIELD_SIZE}
                 fullWidth

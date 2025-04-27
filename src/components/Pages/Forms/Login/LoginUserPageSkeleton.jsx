@@ -10,11 +10,11 @@ const LoginUserPageSkeleton = () => {
   return (
     <div className="skeleton-card p-3">
       <div className="row">
-        <div className="login-form border-0 card rounded-4 bg-light px-4 py-5 shadow-sm d-flex flex-column gap-4">
+        <div className="login-form border-0 card rounded-4 px-4 py-5 shadow flex flex-column gap-2">
           <h4 className="card-title text-center">
             <AppHeadingSkeleton />
           </h4>
-          <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
+          <div className="card-body d-flex flex-column gap-2 w-100 overflow-hidden">
             <AppInputSkeleton count={2} />
             <AppButtonSkeleton count={2} />
           </div>

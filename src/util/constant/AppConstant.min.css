@@ -24,9 +24,14 @@
   /* background-color: #333; Background color for the toast */
   font-size: small;
   letter-spacing: 0.5px;
-  color: black; /* Text color */
+  background-color: var(--bg-secondary);
+  color: var(--text-primary); /* Text color */
   border-radius: 8px; /* Rounded corners */
   padding: 15px 20px; /* Padding inside the toast */
+}
+
+.Toastify__close-button {
+  color: var(--text-primary);
 }
 
 /* Example for customizing the position */

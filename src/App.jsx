@@ -1,23 +1,26 @@
+import "./App.min.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import "./App.min.css";
 
-import NavigationProvaider from "./util/context/NavigationContext.jsx";
 import React, { Suspense } from "react";
-import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { SkeletonTheme } from "react-loading-skeleton";
-
-import PageTitile from "./util/config/GetPageTitile.jsx";
-import AppLoader from "./components/Pages/AppLoader/AppLoader.jsx";
-import AOSProvider from "./util/context/AOSScrollAnimationContext.jsx";
-
 import { useEffect } from "react";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+
+import AOSProvider from "./util/context/AOSScrollAnimationContext.jsx";
+import { ToastContainer } from "react-toastify";
+import { SkeletonTheme } from "react-loading-skeleton";
+import { setUser } from "./util/redux/userSlice.jsx";
+
+
+import AppLoader from "./components/Pages/AppLoader/AppLoader.jsx";
+import PageTitile from "./util/config/GetPageTitile.jsx";
+import NavigationProvaider from "./util/context/NavigationContext.jsx";
 import { LoadingProvider } from "./util/context/LoadingContext.jsx";
 import { authUserDetails, loadUser } from "./util/config/AuthSetGet.jsx";
-import { useDispatch } from "react-redux";
-import { setUser } from "./util/redux/userSlice.jsx";
+
 import {
   ABOUT_PAGE_URL,
   HOME_PAGE_URL,
@@ -39,11 +42,11 @@ import ThemeProvider from "./util/context/ThemeContext.jsx";
 const App = () => {
   const dispatch = useDispatch();
 
-  const fetchAuthUser = async () => {
+  const fetchAuthUser = useCallback(async () => {
     const userRes = await loadUser();
     const userObj = authUserDetails(userRes);
     dispatch(setUser(userObj));
-  };
+  }, []);
 
   useEffect(() => {
     fetchAuthUser();
@@ -77,7 +80,7 @@ const App = () => {
         <LoadingProvider>
           <SkeletonTheme
             borderRadius={10}
-            baseColor="#e0e0e0"
+            baseColor="var(--bg-secondary)"
             highlightColor="#f0f0f0"
           >
             <AOSProvider>
