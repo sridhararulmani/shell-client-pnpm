@@ -200,6 +200,7 @@ export const AppMUIPopover = React.memo(
         onClose={onCloseFn}
         anchorOrigin={anchorOrigin}
         transformOrigin={transferOrigin}
+        disableScrollLock={true}
         sx={{ marginTop: "15px" }}
         PaperProps={{
           sx: {
