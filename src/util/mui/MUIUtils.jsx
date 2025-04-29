@@ -190,11 +190,12 @@ export const AppMUIPopover = React.memo(
     buttonList,
   }) => {
     const { AppTextSingleLineSkeleton } = AppSkeleton();
-
+    const isOpen = Boolean(anchorEl) && document.contains(anchorEl);
+    
     return (
       <Popover
         disableEnforceFocus
-        open={Boolean(anchorEl)}
+        open={isOpen}
         anchorEl={anchorEl}
         onClick={onClickFn}
         onClose={onCloseFn}
