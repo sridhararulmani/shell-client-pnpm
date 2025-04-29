@@ -197,6 +197,7 @@ const Navbar = () => {
       </Toolbar>
       <Drawer
         className="block lg:hidden xl:hidden"
+        disableScrollLock={true}
         PaperProps={{
           sx: { ...commonNavBarWithoutBlurStyleColors },
         }}
