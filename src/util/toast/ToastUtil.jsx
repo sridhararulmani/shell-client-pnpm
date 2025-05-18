@@ -1,4 +1,3 @@
-import "./AppConstant.min.css";
 import { toast } from "react-toastify";
 
 // Function to show success toast

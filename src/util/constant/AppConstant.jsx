@@ -1,13 +1,21 @@
-import "./AppConstant.min.css";
+import "../constant/css/AppConstant.min.css";
 import "../../App.min.css";
 import React from "react";
 
 import { useNavigationHistory } from "../context/NavigationContext";
-import { APP_MUI_BUTTON_VARIENT } from "./AppUtils";
+import { APP_MUI_BUTTON_VARIENT } from "../AppUtils";
 import { Avatar, ListItemAvatar, Button as MUIButton } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { muiFontStyle } from "../mui/MUIUtils";
+import { AppMUISplitButton, muiFontStyle } from "../mui/MUIUtils";
 import { useCallback } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { preferenceMenu } from "../classes/PreferenceMenu";
+import { AppSelectData } from "../classes/AppSelectData";
+import { DarkMode } from "@mui/icons-material";
+import { LightMode } from "@mui/icons-material";
+import { ComputerOutlined } from "@mui/icons-material";
+import { Palette } from "@mui/icons-material";
 
 const AppConstant = () => {
   const { navPrevPath } = useNavigationHistory();
@@ -90,7 +98,8 @@ const AppConstant = () => {
   const AppButton = useCallback(
     ({
       type = APP_MUI_BUTTON_VARIENT,
-      icon,
+      startIcon = null,
+      endIcon = null,
       text,
       path,
       className = "text-center rounded-5 px-3 border-0",
@@ -100,7 +109,8 @@ const AppConstant = () => {
           className={className}
           LinkComponent={NavLink}
           varient={type}
-          startIcon={icon}
+          startIcon={startIcon}
+          endIcon={endIcon}
           to={path}
           fullWidth={true}
           sx={{
@@ -120,8 +130,9 @@ const AppConstant = () => {
       altText,
       dataAos = "flip-right",
       dataAosDelay = "300",
-      dataAosOnce = "false",
-      isHideDock = "false",
+      dataAosOnce = false,
+      isHideDock = false,
+      className = "",
       onClickFn = () => {},
     }) => {
       return (
@@ -146,6 +157,7 @@ const AppConstant = () => {
                 transition: "all 0.5s ease-in-out",
                 cursor: "pointer",
               }}
+              className={className}
             ></Avatar>
           </div>
         </ListItemAvatar>
@@ -179,6 +191,66 @@ const AppConstant = () => {
     );
   }, []);
 
+  const AppThemeChange = useCallback(() => {
+    
+    const getPreferedTheme = () => {
+      const stored = localStorage.getItem("theme");
+      if (stored && stored !== "default") {
+        return stored;
+      }
+      const systemPreferredTheme = window.matchMedia(
+        "(prefers-color-scheme:dark)"
+      ).matches;
+      return systemPreferredTheme ? "dark" : "light";
+    };
+
+    const [theme, setTheme] = useState(getPreferedTheme);
+
+    useEffect(() => {
+      setTheme(getPreferedTheme);
+      document.documentElement.setAttribute("data-theme", theme);
+    }, [theme]);
+
+    const handleChange = (e) => {
+      localStorage.setItem(
+        "theme",
+        e === "dark" ? "dark" : e === "light" ? "light" : "default"
+      );
+      setTheme(getPreferedTheme);
+    };
+
+    const preferenceMenuList = [
+      new preferenceMenu(
+        "Theme",
+        "Theme",
+        <Palette />,
+        null,
+        "Customize your theme with shell",
+        (
+          <AppMUISplitButton
+            options={[
+              new AppSelectData("Dark", <DarkMode />, null, "dark", (e) =>
+                handleChange(e)
+              ),
+              new AppSelectData("Light", <LightMode />, null, "light", (e) =>
+                handleChange(e)
+              ),
+              new AppSelectData(
+                "Default",
+                <ComputerOutlined />,
+                null,
+                "default",
+                (e) => handleChange(e)
+              ),
+            ]}
+            selectedValue={localStorage.getItem("theme")}
+          />
+        )
+      ),
+    ];
+    return preferenceMenuList;
+  }, []);
+
   return {
     CancelButton,
     Button,
@@ -187,6 +259,7 @@ const AppConstant = () => {
     AppName,
     AppButton,
     AppCardTitle,
+    AppThemeChange,
     AppUserProfileAvatar,
   };
 };

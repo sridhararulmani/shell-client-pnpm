@@ -2,7 +2,7 @@ import "./LogoutUserPage.min.css";
 
 import { authUserDetails, loadUser } from "../../../../util/config/AuthSetGet";
 import { useLoading } from "../../../../util/context/LoadingContext";
-import { showWarningToast } from "../../../../util/constant/ToastUtil";
+import { showWarningToast } from "../../../../util/toast/ToastUtil";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -13,6 +13,11 @@ import getFileIntoBase64 from "../../../../util/config/GetFileIntoBase64";
 import { useState } from "react";
 import { useEffect } from "react";
 import { appCard, appCardStyles } from "../../../../util/mui/MUIUtils";
+import {
+  appContainerStyle,
+  dataAosAnimationForContainers,
+  dataAosOnce,
+} from "../../../../util/AppUtils";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -61,23 +66,32 @@ const Logout = () => {
   };
 
   return (
-    <div className="p-3" data-aos="fade">
+    <div
+      className={`${appContainerStyle} `}
+      data-aos={dataAosAnimationForContainers}
+      data-aos-once={dataAosOnce}
+    >
       <div className="row">
-        <div className={`${appCard} ${appCardStyles}`}>
-          <span className="absolute -top-5">
+        <div className={`${appCard} ${appCardStyles} gap-4`}>
+          <div
+            className="flex item-center justify-center"
+            style={{ pointerEvents: "none"}}
+          >
             <AppUserProfileAvatar
+              className="!w-15 !h-15 border-3 border-light"
               userProfile={userProfile}
               altText={user.userName}
-              dataAos={"zoom-in"}
               isHideDock="true"
             />
-          </span>
-          <p className="card-title text-center">
-            Are you Sure. You wants to logout!
-          </p>
-          <div className="card-body d-flex flex-row gap-5 align-items-center justify-content-center">
-            <CancelButton buttonText={"Back"} />
-            <Button buttonText={"Yes"} onClick={handleLogout} />
+          </div>
+          <div>
+            <p className="card-title text-center">
+              Are you Sure. You wants to logout!
+            </p>
+            <div className="card-body d-flex flex-row gap-5 align-items-center justify-content-center">
+              <CancelButton buttonText={"Back"} />
+              <Button buttonText={"Yes"} onClick={handleLogout} />
+            </div>
           </div>
         </div>
       </div>

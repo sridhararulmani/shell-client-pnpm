@@ -5,13 +5,16 @@ import * as Yup from "yup";
 import api from "../../../../util/config/AxiosConfig";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../../../util/context/LoadingContext";
-import { showWarningToast } from "../../../../util/constant/ToastUtil";
+import { showWarningToast } from "../../../../util/toast/ToastUtil";
 import AppConstant from "../../../../util/constant/AppConstant";
 import { Box, TextField, IconButton, Avatar } from "@mui/material";
 import {
   APP_MUI_INPUT_FIELD_SIZE,
   APP_MUI_INPUT_FIELD_VARIENT,
-} from "../../../../util/constant/AppUtils";
+  appContainerStyle,
+  dataAosAnimationForContainers,
+  dataAosOnce,
+} from "../../../../util/AppUtils";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { appCardStyles, themeBasedStyleForMuiInputs } from "../../../../util/mui/MUIUtils";
@@ -156,7 +159,7 @@ const Register = () => {
   };
 
   return (
-    <div className="p-3" data-aos="fade">
+    <div className={appContainerStyle} data-aos={dataAosAnimationForContainers} data-aos-once={dataAosOnce}>
       <div className="row">
         <div className={`card register-form ${appCardStyles}`}>
           <AppCardTitle text={"Sign up New User"} />

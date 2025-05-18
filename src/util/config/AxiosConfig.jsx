@@ -1,16 +1,17 @@
 import axios from "axios";
-import { showErrorToast, showSuccessToast } from "../constant/ToastUtil";
+import { showErrorToast, showSuccessToast } from "../toast/ToastUtil";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../AppUtils";
 
 const APP_URL = "/shell";
 
 const API_BASE_URL = "http://localhost:8080" + APP_URL;
 
-export const getAccessToken = () => localStorage.getItem("ACCESS_TOKEN");
-export const getRefreshToken = () => localStorage.getItem("REFRESH_TOKEN");
+export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN);
+export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN);
 
 export const storeTokens = (accessToken, refreshToken) => {
-  localStorage.setItem("ACCESS_TOKEN", accessToken);
-  localStorage.setItem("REFRESH_TOKEN", refreshToken);
+  localStorage.setItem(ACCESS_TOKEN, accessToken);
+  localStorage.setItem(REFRESH_TOKEN, refreshToken);
 };
 
 export const getTokens = () => {
@@ -89,7 +90,7 @@ api.interceptors.response.use(
           storeTokens(newAccessToken, newRefreshToken);
           api.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`;
+          ] = `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`;
           //Retrying the past requestt using new access Token
           return api(originalRequest);
         } catch (error) {

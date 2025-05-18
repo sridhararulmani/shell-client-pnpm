@@ -33,6 +33,7 @@ import {
   commonNavBarWithoutBlurStyleColors,
 } from "../../util/mui/MUIUtils";
 import { useCallback } from "react";
+import { ACCESS_TOKEN, AppThemes, dataAosOnce } from "../../util/AppUtils";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState();
@@ -44,12 +45,13 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsLoggedIn(getAccessToken() != null ? true : false);
-  }, [localStorage.getItem("ACCESS_TOKEN")]);
+  }, [localStorage.getItem(ACCESS_TOKEN)]);
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const toggleRef = useRef(null);
 
+  const anchorRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handlePopoverCick = useCallback((event) => {
@@ -78,6 +80,12 @@ const Navbar = () => {
   const handleHamburger = useCallback(() => {
     setIsOpen(!isOpen);
   }, []);
+
+  useEffect(() => {
+    if (anchorEl && !document.body.contains(anchorEl)) {
+      setAnchorEl(null);
+    }
+  }, [anchorEl]);
 
   useEffect(() => {
     setUserProfile(() =>
@@ -118,7 +126,7 @@ const Navbar = () => {
         </Box>
         {/* Menu */}
         <Box className="flex gap-2">
-          {isLoggedIn ? (
+          {!isLoggedIn ? (
             <>
               <Box className="hidden lg:block xl:block menu" data-aos="fade">
                 <div className="menu-items gap-4" ref={menuRef}>
@@ -135,9 +143,8 @@ const Navbar = () => {
                             <AppButton
                               className={"auth-menu-btn fw-bold"}
                               path={menu.url}
-                              icon={menu.icon}
+                              startIcon={menu.startIcon}
                               text={menu.title}
-                              onClick={() => handleHamburger()}
                             ></AppButton>
                           </li>
                         );
@@ -154,7 +161,6 @@ const Navbar = () => {
                     onClickFn={handlePopoverCick}
                     dataAosDelay="900"
                     dataAosOnce="true"
-                    dataAos={"flip-right"}
                   />
                   <AppMUIPopover
                     anchorEl={anchorEl}
@@ -196,73 +202,88 @@ const Navbar = () => {
         </Box>
       </Toolbar>
       <Drawer
+        variant="temporary"
         className="block lg:hidden xl:hidden"
-        disableScrollLock={true}
         PaperProps={{
           sx: { ...commonNavBarWithoutBlurStyleColors },
+        }}
+        ModalProps={{
+          keepMounted: true,
+          disableScrollLock: true,
         }}
         anchor="right"
         open={isOpen}
       >
         <Box
           sx={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
+            position: "relative",
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
           }}
+          data-aos="slide-left"
+          data-aos-once={dataAosOnce}
         >
-          <ListItemButton data-aos="slide-left">
-            <ListItemText
-              className="text-wrap"
-              primary={
-                <Typography
-                  className="text-wrap text-center"
-                  fontSize={"small"}
-                >
-                  {user.userName || "User Name"}
-                </Typography>
-              }
-              sx={{
-                width: "60px",
-              }}
-            ></ListItemText>
-            <AppUserProfileAvatar
-              userProfile={userProfile}
-              altText={user.userName}
-              dataAos={"zoom-in"}
-            />
-          </ListItemButton>
-        </Box>
-        <Box data-aos="slide-left" className="flex flex-col p-2">
-          <List
-            data-aos="slide-left"
-            className="flex flex-col item-center justify-center"
+          <Box
+            sx={{
+              position: "sticky",
+              top: 0,
+              zIndex: 2,
+              backgroundColor: "var(--bg-primary)",
+            }}
           >
-            {appAuthMenu.map((menu, index) => {
-              return (
-                <ListItem className="auth-menu-item" key={menu.id || index}>
-                  <AppButton
-                    className={"auth-menu-btn fw-bold"}
-                    path={menu.url}
-                    icon={menu.icon}
-                    text={menu.title}
-                    onClick={() => handleHamburger()}
-                  ></AppButton>
-                </ListItem>
-              );
-            })}
-          </List>
-        </Box>
-        <Box
-          sx={{
-            position: "sticky",
-            bottom: 0,
-            zIndex: 1,
-          }}
-        >
-          <List>
-            <AppMUIListItemButtonWithIcon buttonList={settingsMenu} />
-          </List>
+            <ListItemButton>
+              <ListItemText
+                className="text-wrap"
+                primary={
+                  <Typography
+                    className="text-wrap text-center"
+                    fontSize={"small"}
+                  >
+                    {user.userName || "User Name"}
+                  </Typography>
+                }
+                sx={{
+                  width: "60px",
+                }}
+              ></ListItemText>
+              <AppUserProfileAvatar
+                userProfile={userProfile}
+                altText={user.userName}
+                dataAos={"zoom-in"}
+              />
+            </ListItemButton>
+          </Box>
+          <Box className="flex flex-col p-2">
+            <List className="flex flex-col item-center justify-center">
+              {appAuthMenu.map((menu, index) => {
+                return (
+                  <ListItem className="auth-menu-item" key={menu.id || index}>
+                    <AppButton
+                      className={"auth-menu-btn fw-bold"}
+                      path={menu.url}
+                      startIcon={menu.startIcon}
+                      text={menu.title}
+                      onClick={handleHamburger}
+                    ></AppButton>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+          <Box
+            sx={{
+              mt: "auto",
+              position: "sticky",
+              bottom: 0,
+              zIndex: 1,
+              backgroundColor: "var(--bg-primary)",
+            }}
+          >
+            <List>
+              <AppMUIListItemButtonWithIcon buttonList={settingsMenu} />
+            </List>
+          </Box>
         </Box>
       </Drawer>
     </AppBar>

@@ -1,5 +1,5 @@
 import api, { getAccessToken } from "./AxiosConfig";
-import { showErrorToast } from "../constant/ToastUtil";
+import { showErrorToast } from "../toast/ToastUtil";
 
 export const getCurrentUserDetails = async () => {
   try {

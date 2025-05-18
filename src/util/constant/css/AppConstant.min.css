@@ -10,6 +10,9 @@
   background-color: #26292b;
   color: white;
 }
+.min-h-screen-style {
+  min-height: 90svh;
+}
 .custom-btn:hover:not(.active) {
   background-color: var(--dark-primary-button-hover-color);
   letter-spacing: 1.5px;

@@ -3,12 +3,13 @@ import "./RegisterUserPage.min.css";
 import Skeleton from "react-loading-skeleton";
 import { Box } from "@mui/material";
 import AppSkeleton from "../../../../util/skeleton/AppSkeleton";
+import { appContainerStyle, dataAosAnimationForContainers, dataAosOnce } from "../../../../util/AppUtils";
 
 const RegisterUserPageSkeleton = () => {
   const { AppButtonSkeleton, AppInputSkeleton } = AppSkeleton();
 
   return (
-    <div className="skeleton-card p-3">
+    <div className={`skeleton-card ${appContainerStyle}`} data-aos={dataAosAnimationForContainers} data-aos-once={dataAosOnce}>
       <div className="row">
         <div className="register-form border-0 card rounded-4 px-4 py-5 shadow d-flex flex-column gap-4">
           <h4 className="card-title text-center">

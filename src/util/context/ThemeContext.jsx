@@ -10,10 +10,9 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const getPreferedTheme = () => {
     const stored = localStorage.getItem("theme");
-    if (stored) {
+    if (stored && stored !== 'default') {
       return stored;
     }
-
     const systemPreferredTheme = window.matchMedia(
       "(prefers-color-scheme:dark)"
     ).matches;
@@ -24,13 +23,11 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme:dark)");
-
-    const handleChange = (e) => {
+    const handleChange = (e) => {      
       const stored = localStorage.getItem("theme");
       if (!stored) {
         setTheme(e.matches ? "dark" : "light");

@@ -5,7 +5,7 @@ import api, { storeTokens } from "../../../../util/config/AxiosConfig";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useLoading } from "../../../../util/context/LoadingContext";
-import { showSuccessToast } from "../../../../util/constant/ToastUtil";
+import { showSuccessToast } from "../../../../util/toast/ToastUtil";
 import { useDispatch } from "react-redux";
 import { authUserDetails, loadUser } from "../../../../util/config/AuthSetGet";
 import { setUser } from "../../../../util/redux/userSlice";
@@ -15,11 +15,17 @@ import { useSelector } from "react-redux";
 import {
   APP_MUI_INPUT_FIELD_SIZE,
   APP_MUI_INPUT_FIELD_VARIENT,
-} from "../../../../util/constant/AppUtils";
+  appContainerStyle,
+  dataAosAnimationForContainers,
+  dataAosOnce,
+} from "../../../../util/AppUtils";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRef } from "react";
-import { appCardStyles, themeBasedStyleForMuiInputs } from "../../../../util/mui/MUIUtils";
+import {
+  appCardStyles,
+  themeBasedStyleForMuiInputs,
+} from "../../../../util/mui/MUIUtils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -106,92 +112,92 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="p-3" data-aos="fade">
-        <div className="row">
-          <div className={`card login-form ${appCardStyles}`}>
-            <Box
-              component="form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                formik.handleSubmit();
-                handleValidateFields();
-              }}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-              }}
-            >
-              <AppCardTitle text={"Sign In Account"} />
-              <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
-                {error && (
-                  <span
-                    className="card border-danger bg-danger p-4 text-white text-center"
-                    data-aos="zoom-in"
-                    data-aos-delay="10"
-                  >
-                    {error}
-                  </span>
-                )}
-                <div>
-                  <TextField
-                    label="Email or User Name"
-                    variant={APP_MUI_INPUT_FIELD_VARIENT}
-                    type="text"
-                    name="userName"
-                    value={formik.values.userName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.userName && Boolean(formik.errors.userName)
-                    }
-                    helperText={
-                      formik.touched.userName && formik.errors.userName
-                    }
-                    sx={{
-                      ...themeBasedStyleForMuiInputs,
-                    }}
-                    inputRef={feileRef.userName}
-                    // value={userCridentials.userName}
-                    // onChange={handleChange}
-                    size={APP_MUI_INPUT_FIELD_SIZE}
-                    fullWidth
-                  />
-                </div>
-                <div>
-                  <TextField
-                    label="Password"
-                    variant={APP_MUI_INPUT_FIELD_VARIENT}
-                    type="password"
-                    name="userPassword"
-                    value={formik.values.userPassword}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.userPassword &&
-                      Boolean(formik.errors.userPassword)
-                    }
-                    helperText={
-                      formik.touched.userPassword && formik.errors.userPassword
-                    }
-                    inputRef={feileRef.userPassword}
-                    // value={userCridentials.userPassword}
-                    // onChange={handleChange}
-                    size={APP_MUI_INPUT_FIELD_SIZE}
-                    fullWidth
-                  />
-                </div>
-                <div className="btn-grp d-flex flex-column gap-3 align-items-center justify-content-center">
-                  <SubmitButton
-                    buttonText={"Sign In"}
-                    isDisable={!formik.isValid}
-                  />
-                  <CancelButton buttonText={"Back"} />
-                </div>
+    <div
+      className={appContainerStyle}
+      data-aos={dataAosAnimationForContainers}
+      data-aos-once={dataAosOnce}
+    >
+      <div className="row">
+        <div className={`card login-form ${appCardStyles}`}>
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              formik.handleSubmit();
+              handleValidateFields();
+            }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+            }}
+          >
+            <AppCardTitle text={"Sign In Account"} />
+            <div className="card-body d-flex flex-column gap-4 w-100 overflow-hidden">
+              {error && (
+                <span
+                  className="card border-danger bg-danger p-4 text-white text-center"
+                  data-aos="zoom-in"
+                  data-aos-delay="10"
+                >
+                  {error}
+                </span>
+              )}
+              <div>
+                <TextField
+                  label="Email or User Name"
+                  variant={APP_MUI_INPUT_FIELD_VARIENT}
+                  type="text"
+                  name="userName"
+                  value={formik.values.userName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.userName && Boolean(formik.errors.userName)
+                  }
+                  helperText={formik.touched.userName && formik.errors.userName}
+                  sx={{
+                    ...themeBasedStyleForMuiInputs,
+                  }}
+                  inputRef={feileRef.userName}
+                  // value={userCridentials.userName}
+                  // onChange={handleChange}
+                  size={APP_MUI_INPUT_FIELD_SIZE}
+                  fullWidth
+                />
               </div>
-            </Box>
-          </div>
+              <div>
+                <TextField
+                  label="Password"
+                  variant={APP_MUI_INPUT_FIELD_VARIENT}
+                  type="password"
+                  name="userPassword"
+                  value={formik.values.userPassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.userPassword &&
+                    Boolean(formik.errors.userPassword)
+                  }
+                  helperText={
+                    formik.touched.userPassword && formik.errors.userPassword
+                  }
+                  inputRef={feileRef.userPassword}
+                  // value={userCridentials.userPassword}
+                  // onChange={handleChange}
+                  size={APP_MUI_INPUT_FIELD_SIZE}
+                  fullWidth
+                />
+              </div>
+              <div className="btn-grp d-flex flex-column gap-3 align-items-center justify-content-center">
+                <SubmitButton
+                  buttonText={"Sign In"}
+                  isDisable={!formik.isValid}
+                />
+                <CancelButton buttonText={"Back"} />
+              </div>
+            </div>
+          </Box>
         </div>
       </div>
     </div>

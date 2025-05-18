@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AppSkeleton from "../../../util/skeleton/AppSkeleton";
 import { appCard } from "../../../util/mui/MUIUtils.jsx";
+import { appContainerStyle, dataAosAnimationForContainers, dataAosOnce } from "../../../util/AppUtils.jsx";
 
 const Home = () => {
   const { TextSkeleton } = AppSkeleton();
@@ -14,6 +15,10 @@ const Home = () => {
   let user = useSelector((state) => state.user);
 
   const [userProfile, setUserProfile] = useState();
+
+  useEffect(() => {
+    console.log("Home rendering");
+  }, []);
 
   useEffect(() => {
     setUserProfile(() =>
@@ -24,7 +29,7 @@ const Home = () => {
   }, [user]);
 
   return (
-    <div className="p-3 flex flex-column gap-4" data-aos="fade">
+    <div className={`flex flex-column gap-4 ${appContainerStyle}`} data-aos={dataAosAnimationForContainers} data-aos-once={dataAosOnce}>
       <div className="row gap-4">
         <div className={`${appCard}`}>
           <h2 className="card-title">Home</h2>

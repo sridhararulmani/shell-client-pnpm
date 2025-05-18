@@ -1,9 +1,10 @@
+import { appContainerStyle, dataAosAnimationForContainers, dataAosOnce } from "../../../util/AppUtils";
 import { appCard } from "../../../util/mui/MUIUtils";
 import "./AboutPage.min.css";
 
 const About = () => {
   return (
-    <div className="d-flex flex-column p-3 gap-5" data-aos="fade">
+    <div className={`${appContainerStyle}`} data-aos={dataAosAnimationForContainers} data-aos-once={dataAosOnce}>
       <div className="row">
         <div className={`${appCard}`}>
           <h2>About</h2>

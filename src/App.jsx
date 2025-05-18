@@ -14,7 +14,6 @@ import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { setUser } from "./util/redux/userSlice.jsx";
 
-
 import AppLoader from "./components/Pages/AppLoader/AppLoader.jsx";
 import PageTitile from "./util/config/GetPageTitile.jsx";
 import NavigationProvaider from "./util/context/NavigationContext.jsx";
@@ -24,6 +23,7 @@ import { authUserDetails, loadUser } from "./util/config/AuthSetGet.jsx";
 import {
   ABOUT_PAGE_URL,
   HOME_PAGE_URL,
+  SETTINGS_PAGE_URL,
   SHOP_PAGE_URL,
   SIGN_IN_PAGE_URL,
   SIGN_OUT_PAGE_URL,
@@ -38,6 +38,8 @@ import AboutPageSkeleton from "./components/Pages/About/AboutPageSkeleton.jsx";
 import RegisterUserPageSkeleton from "./components/Pages/Forms/Register/RegisterUserPageSkeleton.jsx";
 import LogoutUserPageSkeleton from "./components/Pages/Forms/Logout/LogoutUserPageSkeleton.jsx";
 import ThemeProvider from "./util/context/ThemeContext.jsx";
+import SettingsPageSkeleton from "./components/Pages/Settings/SettingsPageSkeleton.jsx";
+import { useState } from "react";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -65,6 +67,9 @@ const App = () => {
   );
   const Register = React.lazy(() =>
     import("./components/Pages/Forms/Register/RegisterUserPage.jsx")
+  );
+  const Settings = React.lazy(() =>
+    import("./components/Pages/Settings/Settings.jsx")
   );
 
   return (
@@ -116,6 +121,15 @@ const App = () => {
                           element={
                             <Suspense fallback={<AboutPageSkeleton />}>
                               <About />
+                            </Suspense>
+                          }
+                        ></Route>
+                        <Route
+                          exact
+                          path={SETTINGS_PAGE_URL}
+                          element={
+                            <Suspense fallback={<SettingsPageSkeleton />}>
+                              <Settings />
                             </Suspense>
                           }
                         ></Route>
