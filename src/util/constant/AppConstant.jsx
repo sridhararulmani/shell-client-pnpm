@@ -192,7 +192,6 @@ const AppConstant = () => {
   }, []);
 
   const AppThemeChange = useCallback(() => {
-    
     const getPreferedTheme = () => {
       const stored = localStorage.getItem("theme");
       if (stored && stored !== "default") {
@@ -212,6 +211,7 @@ const AppConstant = () => {
     }, [theme]);
 
     const handleChange = (e) => {
+      console.log("Theme Handle Changes");
       localStorage.setItem(
         "theme",
         e === "dark" ? "dark" : e === "light" ? "light" : "default"

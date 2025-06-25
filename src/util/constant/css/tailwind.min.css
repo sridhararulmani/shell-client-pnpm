@@ -200,6 +200,7 @@
   --color-gray-50: rgb(249, 250, 251);
   --color-gray-nav-50: rgb(249, 250, 251, 0.75);
   --color-gray-100: rgb(243, 244, 246);
+  --color-gray-loader-100: rgb(243, 244, 246, 0.75);
   --color-gray-200: rgb(229, 231, 235);
   --color-gray-300: rgb(209, 213, 220);
   --color-gray-400: rgb(153, 161, 175);
@@ -208,8 +209,10 @@
   --color-gray-700: rgb(54, 65, 83);
   --color-gray-800: rgb(30, 41, 57);
   --color-gray-nav-800: rgba(30, 41, 57, 0.75);
+  --color-gray-loader-800: rgba(30, 41, 57, 0.75);
   --color-gray-900: rgb(16, 24, 40);
   --color-gray-950: rgb(3, 7, 18);
+  --color-gray-nav-950: rgb(3, 7, 18, 0.75);
   --color-zinc-50: oklch(0.985 0 0);
   --color-zinc-100: oklch(0.967 0.001 286.375);
   --color-zinc-200: oklch(0.92 0.004 286.32);

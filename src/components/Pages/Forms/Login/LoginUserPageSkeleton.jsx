@@ -1,4 +1,3 @@
-import React from "react";
 import "./LoginUserPage.min.css";
 
 import AppSkeleton from "../../../../util/skeleton/AppSkeleton";
