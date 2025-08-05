@@ -1,8 +1,10 @@
+@import url('../../../App.min.css');
+
 .app-loading-logo-div {
   position: fixed;
   /* height: 100%;
   width: 100%; */
-  background-color: rgba(192, 192, 192, 0.288);
+  background-color: var(--app-loader-bg);
   z-index: 2;
 }
 .ring0 {

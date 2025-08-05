@@ -318,6 +318,9 @@ export const AppMUISplitButton = React.memo(
           }}
         >
           <Button
+            onClick={(e) =>
+              options[selectedIndex]?.onClickFn(options[selectedIndex].value)
+            }
             sx={{
               ...muiButtonStyle,
               ...muiFontStyle,
@@ -357,8 +360,7 @@ export const AppMUISplitButton = React.memo(
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin:
-                  placement === "left" ? "right top" : "left top",
+                transformOrigin: "top center",
               }}
             >
               <Paper

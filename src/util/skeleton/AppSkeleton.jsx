@@ -43,6 +43,18 @@ const AppSkeleton = () => {
     );
   }, []);
 
+  const AppButtonSkeletonRow = useCallback(({ count = 1 }) => {
+    return (
+      <Skeleton
+        width={`100%`}
+        height={35}
+        borderRadius={50}
+        count={count}
+        style={{ display: "flex", flexDirection: "row", gap: "2px" }}
+      ></Skeleton>
+    );
+  }, []);
+  
   const AppTextSkeleton = useCallback(({ count = 1 }) => {
     return (
       <>
@@ -64,6 +76,10 @@ const AppSkeleton = () => {
     return <Skeleton width={width} height={`100%`} count={count}></Skeleton>;
   }, []);
 
+  const AppAvatarSkeleton = useCallback(({ count = 1}) => {
+    return <Skeleton className={`!w-15 !h-15`} count={count} borderRadius={`50px`}/>;
+  }, []);
+
   return {
     TextSkeleton,
     AppButtonSkeleton,
@@ -71,6 +87,8 @@ const AppSkeleton = () => {
     AppTextSkeleton,
     AppTextSingleLineSkeleton,
     AppHeadingSkeleton,
+    AppAvatarSkeleton,
+    AppButtonSkeletonRow,
   };
 };
 export default AppSkeleton;
