@@ -4,7 +4,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../AppUtils";
 
 const APP_URL = "/shell";
 
-const API_BASE_URL = "http://localhost:8080" + APP_URL;
+const API_BASE_URL = "http://localhost:8081" + APP_URL;
 
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN);
 export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN);
@@ -79,12 +79,13 @@ api.interceptors.response.use(
           console.log(
             "Auto Request for New Access And New Refresh Token by Axios..."
           );
-          const response = await api.post("/tokens/refreshTokens", {
-            refreshToken,
+          const response = await api.post("/auth/tokens/refreshTokens", {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
           });
           console.log("Refreshing Tokens :" + response?.data);
-          const { newAccessToken, refreshToken: newRefreshToken } =
-            response?.data;
+          const { newAccessToken, newRefreshToken } = response?.data;
           console.log("New Access Token :" + newAccessToken);
           console.log("New Refresh Token :" + newRefreshToken);
           storeTokens(newAccessToken, newRefreshToken);
@@ -96,14 +97,18 @@ api.interceptors.response.use(
         } catch (error) {
           showErrorToast(error?.message);
           console.log("Refresh Token Get Expired .....");
+          if (error.status === 401) {
+            clearLocalStorage();
+            window.location.href = "/";
+          }
           return Promise.reject(error);
         }
       }
       return Promise.reject(error);
     } else {
-      // clearLocalStorage();
       showErrorToast(error?.message);
       // Logout Logic
+      clearLocalStorage();
       console.log("Token Error");
     }
   }

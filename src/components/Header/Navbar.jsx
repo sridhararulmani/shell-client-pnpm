@@ -126,7 +126,7 @@ const Navbar = () => {
         </Box>
         {/* Menu */}
         <Box className="flex gap-2">
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
             <>
               <Box className="hidden lg:block xl:block menu" data-aos="fade">
                 <div className="menu-items gap-4" ref={menuRef}>
